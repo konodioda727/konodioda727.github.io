@@ -73,15 +73,15 @@
 
 
 
-<meta name="description" content="一、箭头函数与普通函数 箭头函数表达式语法比函数表达式更简洁，并且没有自己的this，arguments，super或new.target等，也不能用作构造函数。箭头函数表达式更适用于那些本来需要匿名函数的地方。   普通函数，函数的名字叫shuai_gevar x&#x3D;&quot;shaui_ge&quot;  function shuai_ge()&amp;#123;      console.log(&#96;">
+<meta name="description" content="重定义this的方法var name&#x3D;&#39;刘恺卿&#39;,age&#x3D;&#39;19&#39;;  var obj&#x3D; &amp;#123;      name&#x3D;&#39;帅哥&#39;,      objage:this.age,      from:function(fr,to) &amp;#123;          console.log(this.name + &quot;年龄&quot; + thi">
 <meta property="og:type" content="article">
 <meta property="og:title" content="lkq">
-<meta property="og:url" content="http://baidu.com/2022/11/23/%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0%E4%B8%8E%E6%99%AE%E9%80%9A%E5%87%BD%E6%95%B0%E5%8C%BA%E5%88%AB/index.html">
+<meta property="og:url" content="http://baidu.com/2022/11/23/%E9%87%8D%E6%96%B0%E5%AE%9A%E4%B9%89this/index.html">
 <meta property="og:site_name" content="lkq">
-<meta property="og:description" content="一、箭头函数与普通函数 箭头函数表达式语法比函数表达式更简洁，并且没有自己的this，arguments，super或new.target等，也不能用作构造函数。箭头函数表达式更适用于那些本来需要匿名函数的地方。   普通函数，函数的名字叫shuai_gevar x&#x3D;&quot;shaui_ge&quot;  function shuai_ge()&amp;#123;      console.log(&#96;">
+<meta property="og:description" content="重定义this的方法var name&#x3D;&#39;刘恺卿&#39;,age&#x3D;&#39;19&#39;;  var obj&#x3D; &amp;#123;      name&#x3D;&#39;帅哥&#39;,      objage:this.age,      from:function(fr,to) &amp;#123;          console.log(this.name + &quot;年龄&quot; + thi">
 <meta property="og:locale">
-<meta property="article:published_time" content="2022-11-23T05:27:37.051Z">
-<meta property="article:modified_time" content="2022-11-23T11:35:10.106Z">
+<meta property="article:published_time" content="2022-11-23T11:34:53.337Z">
+<meta property="article:modified_time" content="2022-11-23T11:34:53.337Z">
 <meta property="article:author" content="lkq">
 <meta name="twitter:card" content="summary">
 
@@ -113,7 +113,7 @@
 
 
 
-  <link rel="canonical" href="http://baidu.com/2022/11/23/箭头函数与普通函数区别/"/>
+  <link rel="canonical" href="http://baidu.com/2022/11/23/重新定义this/"/>
 
 
 
@@ -246,7 +246,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://baidu.com/2022/11/23/%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0%E4%B8%8E%E6%99%AE%E9%80%9A%E5%87%BD%E6%95%B0%E5%8C%BA%E5%88%AB/">
+    <link itemprop="mainEntityOfPage" href="http://baidu.com/2022/11/23/%E9%87%8D%E6%96%B0%E5%AE%9A%E4%B9%89this/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="liu">
@@ -275,7 +275,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-11-23T13:27:37+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-11-23T19:34:53+08:00">
                 2022-11-23
               </time>
             
@@ -291,7 +291,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2022-11-23T19:35:10+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2022-11-23T19:34:53+08:00">
                 2022-11-23
               </time>
             
@@ -325,195 +325,40 @@
       
 
       
-        <h2 id="一、箭头函数与普通函数"><a href="#一、箭头函数与普通函数" class="headerlink" title="一、箭头函数与普通函数"></a>一、箭头函数与普通函数</h2><blockquote>
-<p>箭头函数表达式语法比函数表达式更简洁，并且没有自己的<code>this</code>，<code>arguments</code>，<code>super</code>或<code>new.target</code>等，也不能用作构造函数。箭头函数表达式更适用于那些本来需要<code>匿名函数</code>的地方。 </p>
-</blockquote>
-<h3 id="普通函数，函数的名字叫shuai-ge"><a href="#普通函数，函数的名字叫shuai-ge" class="headerlink" title="普通函数，函数的名字叫shuai_ge"></a>普通函数，函数的名字叫shuai_ge</h3><pre><code>var x=&quot;shaui_ge&quot;
+        <h1 id="重定义this的方法"><a href="#重定义this的方法" class="headerlink" title="重定义this的方法"></a>重定义this的方法</h1><pre><code>var name=&#39;刘恺卿&#39;,age=&#39;19&#39;;
 
-function shuai_ge()&#123;
+var obj= &#123;
 
-    console.log(`$&#123;x=&quot;刘恺卿&quot;&#125;`);
+    name=&#39;帅哥&#39;,
 
-&#125;
-</code></pre>
-<h3 id="箭头函数"><a href="#箭头函数" class="headerlink" title="箭头函数"></a>箭头函数</h3><pre><code> var x=&quot;shuai_ge&quot;;
+    objage:this.age,
 
- (() =&gt; x=&quot;刘恺卿&quot;)()
+    from:function(fr,to) &#123;
 
- console.log(x);
-</code></pre>
-<h2 id="二、箭头函数与匿名函数"><a href="#二、箭头函数与匿名函数" class="headerlink" title="二、箭头函数与匿名函数"></a>二、箭头函数与匿名函数</h2><h3 id="匿名函数"><a href="#匿名函数" class="headerlink" title="匿名函数"></a>匿名函数</h3><pre><code>function ()&#123;
-
-console.log(&quot;刘恺卿&quot;);
-
-&#125;
-</code></pre>
-<h3 id="运行匿名函数-单独运行时结尾加上括号"><a href="#运行匿名函数-单独运行时结尾加上括号" class="headerlink" title="运行匿名函数(单独运行时结尾加上括号)"></a>运行匿名函数(单独运行时结尾加上括号)</h3><pre><code>(function ()&#123;
-
-    //此时会输出刘恺卿
-
-    console.log(&quot;刘恺卿&quot;);
-
-&#125;)(//传入的值)
-</code></pre>
-<h3 id="箭头函数相当于匿名函数，并且简化了函数定义"><a href="#箭头函数相当于匿名函数，并且简化了函数定义" class="headerlink" title="箭头函数相当于匿名函数，并且简化了函数定义"></a>箭头函数相当于匿名函数，并且简化了函数定义</h3><blockquote>
-<h3 id="但实际上，箭头函数和匿名函数有个明显的区别：匿名函数的this指向执行时上下文（由于执行时的全局性，this一般指向window）；箭头函数内部的this是词法作用域，指向父级上下文"><a href="#但实际上，箭头函数和匿名函数有个明显的区别：匿名函数的this指向执行时上下文（由于执行时的全局性，this一般指向window）；箭头函数内部的this是词法作用域，指向父级上下文" class="headerlink" title="但实际上，箭头函数和匿名函数有个明显的区别：匿名函数的this指向执行时上下文（由于执行时的全局性，this一般指向window）；箭头函数内部的this是词法作用域，指向父级上下文"></a>但实际上，箭头函数和匿名函数有个明显的区别：匿名函数的this指向执行时上下文（由于执行时的全局性，this一般指向window）；箭头函数内部的this是<code>词法作用域</code>，指向父级上下文</h3></blockquote>
-<h2 id="三、词法作用域"><a href="#三、词法作用域" class="headerlink" title="三、词法作用域"></a>三、词法作用域</h2><blockquote>
-<p>词法作用域（Lexical Scope） 是<code>定义表达式并能被访问的区间</code>。 换言之，一个声明（定义变量、函数等）的词法作用域就是它<code>被定义时所在的作用域</code>。 注意： 词法作用域又叫静态作用域。</p>
-</blockquote>
-<h3 id="下面的x的词法作用域就是全局"><a href="#下面的x的词法作用域就是全局" class="headerlink" title="下面的x的词法作用域就是全局"></a>下面的x的词法作用域就是全局</h3><pre><code>var x=&quot;帅哥&quot;;
-</code></pre>
-<h3 id="下面的x的词法作用域就是shuai-ge-这个函数"><a href="#下面的x的词法作用域就是shuai-ge-这个函数" class="headerlink" title="下面的x的词法作用域就是shuai_ge()这个函数"></a>下面的x的词法作用域就是shuai_ge()这个函数</h3><pre><code>function shuai_ge()&#123;
-
-    var x=&quot;shaui_ge&quot;；
-
-    console.log(`$&#123;x=&quot;刘恺卿&quot;&#125;`)；
-
-&#125;
-</code></pre>
-<h2 id="四、匿名函数和箭头函数的this指向区别"><a href="#四、匿名函数和箭头函数的this指向区别" class="headerlink" title="四、匿名函数和箭头函数的this指向区别"></a>四、匿名函数和箭头函数的this指向区别</h2><p>eg1.</p>
-<pre><code>var name = &#39;window&#39;
-
-var person = &#123;
-
-    name :&#39;Alan&#39;,
-
-    sayOne:function () &#123;
-
-            console.log(this.name)
-
-    &#125;,
-
-    sayTwo:function () &#123;
-
-        return function () &#123;
-
-            console.log(this.name)
-
-        &#125;
+        console.log(this.name + &quot;年龄&quot; + this.age + &quot;来自&quot; + fr + &quot;去往&quot; + to);
 
     &#125;
 
 &#125;
 
-person.sayOne()
+var lao_die= &#123;
 
-person.sayTwo()()
-</code></pre>
-<blockquote>
-</blockquote>
-<ul>
-<li>函数内部的this指向调用者</li>
-<li>sayOne调用者是person对象，所以this指向person；</li>
-</ul>
-<ul>
-<li>sayTwo的调用者虽然也是person对象，但是区别在于这次调用并没有打出this而是在全局返回了一个匿名函数<br>,而这个匿名函数不是作为某个对象的方法来调用执行，是在全局执行，最后的执行者就是window</li>
-</ul>
-<p>eg2.</p>
-<pre><code>var name = &#39;window&#39;
+    name:lao_die,
 
-var person = &#123;
-
-    name :&#39;one&#39;,
-
-    wrap: function()&#123;
-
-        (function ()&#123;
-
-            console.log(this.name)// window
-
-        &#125;)()
-
-        function sum()&#123;
-
-            console.log(this.name)// window
-
-        &#125;
-
-        sum()，
-
-        good: function sum2() &#123;
-            console.log(this.name)
-        &#125;
-
-    &#125;
+    age:99
 
 &#125;
 
-person.wrap()
 
-person.good()
+    
 </code></pre>
-<blockquote>
-<ul>
-<li>function是调用自身的匿名函数 ，this指向全局，sum被function调用，sum的this指向function，也是全局</li>
-<li>good被person直接调用，this指向person</li>
-</ul>
-</blockquote>
-<p>eg3</p>
-<pre><code>var name=&#39;window&#39;;
-
-var obj = &#123;
-
-    name:&#39;obj&#39;,
-
-    nameprintf:()=&gt;&#123;
-
-        console.log(this.name)
-
-    &#125;
-
-&#125;
-
-obj.nameprintf()
+<h3 id="call-x2F-apply-x2F-bind-三个方法第一个参数均为this的指向-但是后面参数有所不同"><a href="#call-x2F-apply-x2F-bind-三个方法第一个参数均为this的指向-但是后面参数有所不同" class="headerlink" title="call()&#x2F;apply()&#x2F;bind()三个方法第一个参数均为this的指向,但是后面参数有所不同"></a>call()&#x2F;apply()&#x2F;bind()三个方法第一个参数均为this的指向,但是后面参数有所不同</h3><h2 id="call"><a href="#call" class="headerlink" title="call()"></a>call()</h2><pre><code>obj.from.call(lao_die,&#39;hang_zhou&#39;,&#39;wu_han&#39;);
 </code></pre>
-<blockquote>
-<ul>
-<li>nameprintf是箭头函数，this与父级元素obj的this绑定，而obj的this指向window，因此nameprintf的this也指向window</li>
-</ul>
-</blockquote>
-<p>eg4</p>
-<pre><code>var name=&quot;window&quot;
-
-var obj=&#123;
-
-    num:4,
-
-    name:obj,
-
-    fn:function()&#123;  
-
-        console.log(this.name); 
-
-        (() =&gt; &#123;
-
-            console.log(this.name);
-
-        &#125;)();
-
-    &#125;
-
-&#125;
-
-obj.fn(); 
-
-var w = obj.fn;
-
-w(); 
-
-var obj1 = &#123;name:&#39;obj1&#39;, fn:obj.fn&#125;
-
-obj1.fn(); 
+<h3 id="call-的后面参数直接放入"><a href="#call-的后面参数直接放入" class="headerlink" title="call()的后面参数直接放入"></a>call()的后面参数直接放入</h3><h2 id="apply"><a href="#apply" class="headerlink" title="apply()"></a>apply()</h2><pre><code>obj.from.apply(lao_die,[&#39;hang_zhou&#39;,&#39;wu_han&#39;]);
 </code></pre>
-<blockquote>
-<ul>
-<li>箭头函数中的this包含在匿名函数中，匿名函数被function调用，因此箭头函数的this指向与function中的相同</li>
-<li>obj调用fn，因此fn的this指向obj，输出为obj</li>
-<li>w()是新创建的定义在window下的变量，this指向window，输出为window</li>
-<li>obj1调用obj中的fn函数，因此调用对象为obj1，this指向obj1</li>
-</ul>
-</blockquote>
-
+<h3 id="apply-的后面参数要套在中括号内"><a href="#apply-的后面参数要套在中括号内" class="headerlink" title="apply()的后面参数要套在中括号内"></a>apply()的后面参数要套在中括号内</h3><h2 id="bind"><a href="#bind" class="headerlink" title="bind()"></a>bind()</h2><pre><code>obj.from.bind(lao_die,&#39;hang_zhou&#39;,&#39;wu_han&#39;)();
+</code></pre>
+<h3 id="bind-比较特殊，它返回一个函数，所以要在末尾加上-自调用才能运行"><a href="#bind-比较特殊，它返回一个函数，所以要在末尾加上-自调用才能运行" class="headerlink" title="bind()比较特殊，它返回一个函数，所以要在末尾加上()自调用才能运行"></a>bind()比较特殊，它返回一个函数，所以要在末尾加上()自调用才能运行</h3>
       
     </div>
     
@@ -537,15 +382,15 @@ obj1.fn();
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2022/11/23/%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0%E4%B8%8E%E6%99%AE%E9%80%9A%E5%87%BD%E6%95%B0%E5%8C%BA%E5%88%AB/" rel="next" title="">
+                <i class="fa fa-chevron-left"></i> 
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2022/11/23/%E9%87%8D%E6%96%B0%E5%AE%9A%E4%B9%89this/" rel="prev" title="">
-                 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -699,7 +544,7 @@ obj1.fn();
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0%E4%B8%8E%E6%99%AE%E9%80%9A%E5%87%BD%E6%95%B0"><span class="nav-number">1.</span> <span class="nav-text">一、箭头函数与普通函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%99%AE%E9%80%9A%E5%87%BD%E6%95%B0%EF%BC%8C%E5%87%BD%E6%95%B0%E7%9A%84%E5%90%8D%E5%AD%97%E5%8F%ABshuai-ge"><span class="nav-number">1.1.</span> <span class="nav-text">普通函数，函数的名字叫shuai_ge</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0"><span class="nav-number">1.2.</span> <span class="nav-text">箭头函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0%E4%B8%8E%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0"><span class="nav-number">2.</span> <span class="nav-text">二、箭头函数与匿名函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0"><span class="nav-number">2.1.</span> <span class="nav-text">匿名函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0-%E5%8D%95%E7%8B%AC%E8%BF%90%E8%A1%8C%E6%97%B6%E7%BB%93%E5%B0%BE%E5%8A%A0%E4%B8%8A%E6%8B%AC%E5%8F%B7"><span class="nav-number">2.2.</span> <span class="nav-text">运行匿名函数(单独运行时结尾加上括号)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0%E7%9B%B8%E5%BD%93%E4%BA%8E%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0%EF%BC%8C%E5%B9%B6%E4%B8%94%E7%AE%80%E5%8C%96%E4%BA%86%E5%87%BD%E6%95%B0%E5%AE%9A%E4%B9%89"><span class="nav-number">2.3.</span> <span class="nav-text">箭头函数相当于匿名函数，并且简化了函数定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%86%E5%AE%9E%E9%99%85%E4%B8%8A%EF%BC%8C%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0%E5%92%8C%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0%E6%9C%89%E4%B8%AA%E6%98%8E%E6%98%BE%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9A%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0%E7%9A%84this%E6%8C%87%E5%90%91%E6%89%A7%E8%A1%8C%E6%97%B6%E4%B8%8A%E4%B8%8B%E6%96%87%EF%BC%88%E7%94%B1%E4%BA%8E%E6%89%A7%E8%A1%8C%E6%97%B6%E7%9A%84%E5%85%A8%E5%B1%80%E6%80%A7%EF%BC%8Cthis%E4%B8%80%E8%88%AC%E6%8C%87%E5%90%91window%EF%BC%89%EF%BC%9B%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0%E5%86%85%E9%83%A8%E7%9A%84this%E6%98%AF%E8%AF%8D%E6%B3%95%E4%BD%9C%E7%94%A8%E5%9F%9F%EF%BC%8C%E6%8C%87%E5%90%91%E7%88%B6%E7%BA%A7%E4%B8%8A%E4%B8%8B%E6%96%87"><span class="nav-number">2.4.</span> <span class="nav-text">但实际上，箭头函数和匿名函数有个明显的区别：匿名函数的this指向执行时上下文（由于执行时的全局性，this一般指向window）；箭头函数内部的this是词法作用域，指向父级上下文</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E8%AF%8D%E6%B3%95%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="nav-number">3.</span> <span class="nav-text">三、词法作用域</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8B%E9%9D%A2%E7%9A%84x%E7%9A%84%E8%AF%8D%E6%B3%95%E4%BD%9C%E7%94%A8%E5%9F%9F%E5%B0%B1%E6%98%AF%E5%85%A8%E5%B1%80"><span class="nav-number">3.1.</span> <span class="nav-text">下面的x的词法作用域就是全局</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8B%E9%9D%A2%E7%9A%84x%E7%9A%84%E8%AF%8D%E6%B3%95%E4%BD%9C%E7%94%A8%E5%9F%9F%E5%B0%B1%E6%98%AFshuai-ge-%E8%BF%99%E4%B8%AA%E5%87%BD%E6%95%B0"><span class="nav-number">3.2.</span> <span class="nav-text">下面的x的词法作用域就是shuai_ge()这个函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0%E5%92%8C%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0%E7%9A%84this%E6%8C%87%E5%90%91%E5%8C%BA%E5%88%AB"><span class="nav-number">4.</span> <span class="nav-text">四、匿名函数和箭头函数的this指向区别</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%87%8D%E5%AE%9A%E4%B9%89this%E7%9A%84%E6%96%B9%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">重定义this的方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#call-x2F-apply-x2F-bind-%E4%B8%89%E4%B8%AA%E6%96%B9%E6%B3%95%E7%AC%AC%E4%B8%80%E4%B8%AA%E5%8F%82%E6%95%B0%E5%9D%87%E4%B8%BAthis%E7%9A%84%E6%8C%87%E5%90%91-%E4%BD%86%E6%98%AF%E5%90%8E%E9%9D%A2%E5%8F%82%E6%95%B0%E6%9C%89%E6%89%80%E4%B8%8D%E5%90%8C"><span class="nav-number">1.0.1.</span> <span class="nav-text">call()&#x2F;apply()&#x2F;bind()三个方法第一个参数均为this的指向,但是后面参数有所不同</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#call"><span class="nav-number">1.1.</span> <span class="nav-text">call()</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#call-%E7%9A%84%E5%90%8E%E9%9D%A2%E5%8F%82%E6%95%B0%E7%9B%B4%E6%8E%A5%E6%94%BE%E5%85%A5"><span class="nav-number">1.1.1.</span> <span class="nav-text">call()的后面参数直接放入</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#apply"><span class="nav-number">1.2.</span> <span class="nav-text">apply()</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#apply-%E7%9A%84%E5%90%8E%E9%9D%A2%E5%8F%82%E6%95%B0%E8%A6%81%E5%A5%97%E5%9C%A8%E4%B8%AD%E6%8B%AC%E5%8F%B7%E5%86%85"><span class="nav-number">1.2.1.</span> <span class="nav-text">apply()的后面参数要套在中括号内</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bind"><span class="nav-number">1.3.</span> <span class="nav-text">bind()</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#bind-%E6%AF%94%E8%BE%83%E7%89%B9%E6%AE%8A%EF%BC%8C%E5%AE%83%E8%BF%94%E5%9B%9E%E4%B8%80%E4%B8%AA%E5%87%BD%E6%95%B0%EF%BC%8C%E6%89%80%E4%BB%A5%E8%A6%81%E5%9C%A8%E6%9C%AB%E5%B0%BE%E5%8A%A0%E4%B8%8A-%E8%87%AA%E8%B0%83%E7%94%A8%E6%89%8D%E8%83%BD%E8%BF%90%E8%A1%8C"><span class="nav-number">1.3.1.</span> <span class="nav-text">bind()比较特殊，它返回一个函数，所以要在末尾加上()自调用才能运行</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
