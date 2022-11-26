@@ -454,8 +454,8 @@ var lao_die= &#123;
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2022-11-23T19:35:10+08:00">
-                2022-11-23
+              <time title="更新于" itemprop="dateModified" datetime="2022-11-27T00:13:14+08:00">
+                2022-11-27
               </time>
             
           </span>
@@ -522,19 +522,31 @@ console.log(&quot;刘恺卿&quot;);
 &#125;)(//传入的值)
 </code></pre>
 <h3 id="箭头函数相当于匿名函数，并且简化了函数定义"><a href="#箭头函数相当于匿名函数，并且简化了函数定义" class="headerlink" title="箭头函数相当于匿名函数，并且简化了函数定义"></a>箭头函数相当于匿名函数，并且简化了函数定义</h3><blockquote>
-<h3 id="但实际上，箭头函数和匿名函数有个明显的区别：匿名函数的this指向执行时上下文（由于执行时的全局性，this一般指向window）；箭头函数内部的this是词法作用域，指向父级上下文"><a href="#但实际上，箭头函数和匿名函数有个明显的区别：匿名函数的this指向执行时上下文（由于执行时的全局性，this一般指向window）；箭头函数内部的this是词法作用域，指向父级上下文" class="headerlink" title="但实际上，箭头函数和匿名函数有个明显的区别：匿名函数的this指向执行时上下文（由于执行时的全局性，this一般指向window）；箭头函数内部的this是词法作用域，指向父级上下文"></a>但实际上，箭头函数和匿名函数有个明显的区别：匿名函数的this指向执行时上下文（由于执行时的全局性，this一般指向window）；箭头函数内部的this是<code>词法作用域</code>，指向父级上下文</h3></blockquote>
+<p>但实际上，箭头函数和匿名函数有个明显的区别：匿名函数的this指向执行时上下文（由于执行时的全局性，this一般指向window）；箭头函数内部的this是<code>词法作用域</code>，指向父级上下文</p>
+</blockquote>
 <h2 id="三、词法作用域"><a href="#三、词法作用域" class="headerlink" title="三、词法作用域"></a>三、词法作用域</h2><blockquote>
 <p>词法作用域（Lexical Scope） 是<code>定义表达式并能被访问的区间</code>。 换言之，一个声明（定义变量、函数等）的词法作用域就是它<code>被定义时所在的作用域</code>。 注意： 词法作用域又叫静态作用域。</p>
 </blockquote>
-<h3 id="下面的x的词法作用域就是全局"><a href="#下面的x的词法作用域就是全局" class="headerlink" title="下面的x的词法作用域就是全局"></a>下面的x的词法作用域就是全局</h3><pre><code>var x=&quot;帅哥&quot;;
-</code></pre>
-<h3 id="下面的x的词法作用域就是shuai-ge-这个函数"><a href="#下面的x的词法作用域就是shuai-ge-这个函数" class="headerlink" title="下面的x的词法作用域就是shuai_ge()这个函数"></a>下面的x的词法作用域就是shuai_ge()这个函数</h3><pre><code>function shuai_ge()&#123;
+<h3 id="下面的suhai-ge-的词法作用域就是全局"><a href="#下面的suhai-ge-的词法作用域就是全局" class="headerlink" title="下面的suhai_ge()的词法作用域就是全局"></a>下面的suhai_ge()的词法作用域就是全局</h3><pre><code>function shuai_ge()&#123;
 
-    var x=&quot;shaui_ge&quot;；
+    var name=&quot;shaui_ge&quot;；
 
-    console.log(`$&#123;x=&quot;刘恺卿&quot;&#125;`)；
-
+    console.log(name)；
 &#125;
+</code></pre>
+<h3 id="下面的x-的词法作用域就是shuai-ge-这个函数"><a href="#下面的x-的词法作用域就是shuai-ge-这个函数" class="headerlink" title="下面的x()的词法作用域就是shuai_ge()这个函数"></a>下面的x()的词法作用域就是shuai_ge()这个函数</h3><pre><code>(function shuai_ge()&#123;
+
+    var name=&quot;刘恺卿&quot;;
+
+    (function x() &#123;
+
+    	name=&quot;shaui_ge&quot;;
+
+    &#125;)()
+
+    console.log(name);
+
+&#125;)()
 </code></pre>
 <h2 id="四、匿名函数和箭头函数的this指向区别"><a href="#四、匿名函数和箭头函数的this指向区别" class="headerlink" title="四、匿名函数和箭头函数的this指向区别"></a>四、匿名函数和箭头函数的this指向区别</h2><p>eg1.</p>
 <pre><code>var name = &#39;window&#39;
