@@ -454,7 +454,7 @@ var lao_die= &#123;
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2022-11-27T00:13:14+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2022-11-27T08:11:53+08:00">
                 2022-11-27
               </time>
             
@@ -527,12 +527,12 @@ console.log(&quot;刘恺卿&quot;);
 <h2 id="三、词法作用域"><a href="#三、词法作用域" class="headerlink" title="三、词法作用域"></a>三、词法作用域</h2><blockquote>
 <p>词法作用域（Lexical Scope） 是<code>定义表达式并能被访问的区间</code>。 换言之，一个声明（定义变量、函数等）的词法作用域就是它<code>被定义时所在的作用域</code>。 注意： 词法作用域又叫静态作用域。</p>
 </blockquote>
-<h3 id="下面的suhai-ge-的词法作用域就是全局"><a href="#下面的suhai-ge-的词法作用域就是全局" class="headerlink" title="下面的suhai_ge()的词法作用域就是全局"></a>下面的suhai_ge()的词法作用域就是全局</h3><pre><code>function shuai_ge()&#123;
+<h3 id="下面的suhai-ge-的词法作用域就是全局"><a href="#下面的suhai-ge-的词法作用域就是全局" class="headerlink" title="下面的suhai_ge()的词法作用域就是全局"></a>下面的suhai_ge()的词法作用域就是全局</h3><pre><code>(function shuai_ge()&#123;
 
     var name=&quot;shaui_ge&quot;；
 
     console.log(name)；
-&#125;
+&#125;)()
 </code></pre>
 <h3 id="下面的x-的词法作用域就是shuai-ge-这个函数"><a href="#下面的x-的词法作用域就是shuai-ge-这个函数" class="headerlink" title="下面的x()的词法作用域就是shuai_ge()这个函数"></a>下面的x()的词法作用域就是shuai_ge()这个函数</h3><pre><code>(function shuai_ge()&#123;
 
