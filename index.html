@@ -454,7 +454,7 @@ var lao_die= &#123;
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2022-11-27T09:28:16+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2022-11-27T09:30:13+08:00">
                 2022-11-27
               </time>
             
@@ -599,8 +599,7 @@ obj1.o1.fn(); // 2
 <blockquote>
 <p>当事件触发时，属性值就会作为JS代码被执行，当前运行环境下没有clickFun函数，因此浏览器就需要跳出当前运行环境，在整个环境中寻找一个叫clickFun的函数并执行这个函数，所以函数内部的this就指向了全局对象window；如果不是一个函数调用，直接在当前节点对象环境下使用this，那么显然this就会指向当前节点对象；</p>
 </blockquote>
-<h2 id="四、匿名函数和箭头函数的this指向区别"><a href="#四、匿名函数和箭头函数的this指向区别" class="headerlink" title="四、匿名函数和箭头函数的this指向区别"></a>四、匿名函数和箭头函数的this指向区别</h2><p>eg1.匿名函数的全局性</p>
-<pre><code>function fun() &#123;
+<h2 id="四、匿名函数和箭头函数的this指向区别"><a href="#四、匿名函数和箭头函数的this指向区别" class="headerlink" title="四、匿名函数和箭头函数的this指向区别"></a>四、匿名函数和箭头函数的this指向区别</h2><h3 id="eg1-匿名函数的全局性"><a href="#eg1-匿名函数的全局性" class="headerlink" title="eg1.匿名函数的全局性"></a>eg1.匿名函数的全局性</h3><pre><code>function fun() &#123;
 
     (function () &#123;
 
@@ -612,8 +611,7 @@ obj1.o1.fn(); // 2
 
 fun();
 </code></pre>
-<p>eg2.匿名函数在obj中this指向对象</p>
-<pre><code>var name = &#39;window&#39;
+<h3 id="eg2-匿名函数在obj中this指向对象"><a href="#eg2-匿名函数在obj中this指向对象" class="headerlink" title="eg2.匿名函数在obj中this指向对象"></a>eg2.匿名函数在obj中this指向对象</h3><pre><code>var name = &#39;window&#39;
 
 var person = &#123;
 
@@ -650,8 +648,7 @@ person.sayTwo()()
 <ul>
 <li>sayTwo的调用者虽然也是person对象，但是区别在于这次调用并没有打出this而是在全局返回了一个匿名函数<br>,而这个匿名函数不是作为某个对象的方法来调用执行，是在全局执行，最后的执行者就是window</li>
 </ul>
-<p>eg3.匿名函数性质运用</p>
-<pre><code>var name = &#39;window&#39;
+<h3 id="eg3-匿名函数性质运用"><a href="#eg3-匿名函数性质运用" class="headerlink" title="eg3.匿名函数性质运用"></a>eg3.匿名函数性质运用</h3><pre><code>var name = &#39;window&#39;
 
 var person = &#123;
 
@@ -692,8 +689,7 @@ person.good()
 <li>good被person直接调用，this指向person</li>
 </ul>
 </blockquote>
-<p>eg4.箭头函数this</p>
-<pre><code>var name=&#39;window&#39;;
+<h3 id="eg4-箭头函数this"><a href="#eg4-箭头函数this" class="headerlink" title="eg4.箭头函数this"></a>eg4.箭头函数this</h3><pre><code>var name=&#39;window&#39;;
 
 var obj = &#123;
 
@@ -714,8 +710,7 @@ obj.nameprintf()
 <li>nameprintf是箭头函数，this与父级元素obj的this绑定，而obj的this指向window，因此nameprintf的this也指向window</li>
 </ul>
 </blockquote>
-<p>eg5.匿名函数和箭头函数结合</p>
-<pre><code>var name=&quot;window&quot;
+<h3 id="eg5-匿名函数和箭头函数结合"><a href="#eg5-匿名函数和箭头函数结合" class="headerlink" title="eg5.匿名函数和箭头函数结合"></a>eg5.匿名函数和箭头函数结合</h3><pre><code>var name=&quot;window&quot;
 
 var obj=&#123;
 
