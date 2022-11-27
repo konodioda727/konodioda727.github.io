@@ -454,7 +454,7 @@ var lao_die= &#123;
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2022-11-27T08:11:53+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2022-11-27T09:28:16+08:00">
                 2022-11-27
               </time>
             
@@ -522,33 +522,97 @@ console.log(&quot;刘恺卿&quot;);
 &#125;)(//传入的值)
 </code></pre>
 <h3 id="箭头函数相当于匿名函数，并且简化了函数定义"><a href="#箭头函数相当于匿名函数，并且简化了函数定义" class="headerlink" title="箭头函数相当于匿名函数，并且简化了函数定义"></a>箭头函数相当于匿名函数，并且简化了函数定义</h3><blockquote>
-<p>但实际上，箭头函数和匿名函数有个明显的区别：匿名函数的this指向执行时上下文（由于执行时的全局性，this一般指向window）；箭头函数内部的this是<code>词法作用域</code>，指向父级上下文</p>
+<p>但实际上，箭头函数和匿名函数有个明显的区别：匿名函数的this指向执行时上下文（由于执行时的<code>全局性</code>，this一般指向window）；箭头函数内部的this与父级元素this绑定</p>
 </blockquote>
-<h2 id="三、词法作用域"><a href="#三、词法作用域" class="headerlink" title="三、词法作用域"></a>三、词法作用域</h2><blockquote>
-<p>词法作用域（Lexical Scope） 是<code>定义表达式并能被访问的区间</code>。 换言之，一个声明（定义变量、函数等）的词法作用域就是它<code>被定义时所在的作用域</code>。 注意： 词法作用域又叫静态作用域。</p>
-</blockquote>
-<h3 id="下面的suhai-ge-的词法作用域就是全局"><a href="#下面的suhai-ge-的词法作用域就是全局" class="headerlink" title="下面的suhai_ge()的词法作用域就是全局"></a>下面的suhai_ge()的词法作用域就是全局</h3><pre><code>(function shuai_ge()&#123;
+<h2 id="三、this"><a href="#三、this" class="headerlink" title="三、this"></a>三、this</h2><blockquote>
+<h3 id="1：this永远指向一个对象；"><a href="#1：this永远指向一个对象；" class="headerlink" title="1：this永远指向一个对象；"></a>1：this永远指向一个对象；</h3></blockquote>
+<blockquote>
+<h3 id="2：this的指向完全取决于函数调用的位置；"><a href="#2：this的指向完全取决于函数调用的位置；" class="headerlink" title="2：this的指向完全取决于函数调用的位置；"></a>2：this的指向完全取决于函数调用的位置；</h3></blockquote>
+<blockquote>
+<h3 id="3：this指向可以动态改变，只有在运行时才知道this指向"><a href="#3：this指向可以动态改变，只有在运行时才知道this指向" class="headerlink" title="3：this指向可以动态改变，只有在运行时才知道this指向"></a>3：this指向可以动态改变，只有在运行时才知道this指向</h3></blockquote>
+<p>eg1.</p>
+<pre><code>var A = &#123;
 
-    var name=&quot;shaui_ge&quot;；
+    name: &#39;张三&#39;,
 
-    console.log(name)；
-&#125;)()
+    f: function () &#123;
+
+        console.log(&#39;姓名：&#39; + this.name);
+
+    &#125;
+
+&#125;;
+​
+var B = &#123;
+
+    name: &#39;李四&#39;
+
+&#125;;
+​
+B.f = A.f;
+
+B.f()   // 姓名：李四
+
+A.f()   // 姓名：张三
 </code></pre>
-<h3 id="下面的x-的词法作用域就是shuai-ge-这个函数"><a href="#下面的x-的词法作用域就是shuai-ge-这个函数" class="headerlink" title="下面的x()的词法作用域就是shuai_ge()这个函数"></a>下面的x()的词法作用域就是shuai_ge()这个函数</h3><pre><code>(function shuai_ge()&#123;
+<p>eg2.</p>
+<pre><code>function foo() &#123;
 
-    var name=&quot;刘恺卿&quot;;
+    console.log(this.a);
 
-    (function x() &#123;
+&#125;
 
-    	name=&quot;shaui_ge&quot;;
+var obj2 = &#123;
+
+    a: 2,
+
+    fn: foo
+
+&#125;;
+
+var obj1 = &#123;
+
+    a: 1,
+
+    o1: obj2
+
+&#125;;
+
+obj1.o1.fn(); // 2
+</code></pre>
+<h3 id="this的事件绑定"><a href="#this的事件绑定" class="headerlink" title="this的事件绑定"></a>this的事件绑定</h3><pre><code>&lt;input type=&quot;button&quot; value=&quot;按钮&quot; onclick=&quot;clickFun()&quot;&gt;
+
+&lt;script&gt;
+
+    function clickFun()&#123;
+
+        this // 此函数的运行环境在全局window对象下，因此this指向window;
+
+    &#125;
+
+&lt;/script&gt;
+​
+&lt;input type=&quot;button&quot; value=&quot;按钮&quot; onclick=&quot;this&quot;&gt;
+
+&lt;!-- 运行环境在节点对象中，因此this指向本节点对象 --&gt;
+</code></pre>
+<blockquote>
+<p>当事件触发时，属性值就会作为JS代码被执行，当前运行环境下没有clickFun函数，因此浏览器就需要跳出当前运行环境，在整个环境中寻找一个叫clickFun的函数并执行这个函数，所以函数内部的this就指向了全局对象window；如果不是一个函数调用，直接在当前节点对象环境下使用this，那么显然this就会指向当前节点对象；</p>
+</blockquote>
+<h2 id="四、匿名函数和箭头函数的this指向区别"><a href="#四、匿名函数和箭头函数的this指向区别" class="headerlink" title="四、匿名函数和箭头函数的this指向区别"></a>四、匿名函数和箭头函数的this指向区别</h2><p>eg1.匿名函数的全局性</p>
+<pre><code>function fun() &#123;
+
+    (function () &#123;
+
+        console.log(this);
 
     &#125;)()
 
-    console.log(name);
+&#125;
 
-&#125;)()
+fun();
 </code></pre>
-<h2 id="四、匿名函数和箭头函数的this指向区别"><a href="#四、匿名函数和箭头函数的this指向区别" class="headerlink" title="四、匿名函数和箭头函数的this指向区别"></a>四、匿名函数和箭头函数的this指向区别</h2><p>eg1.</p>
+<p>eg2.匿名函数在obj中this指向对象</p>
 <pre><code>var name = &#39;window&#39;
 
 var person = &#123;
@@ -586,7 +650,7 @@ person.sayTwo()()
 <ul>
 <li>sayTwo的调用者虽然也是person对象，但是区别在于这次调用并没有打出this而是在全局返回了一个匿名函数<br>,而这个匿名函数不是作为某个对象的方法来调用执行，是在全局执行，最后的执行者就是window</li>
 </ul>
-<p>eg2.</p>
+<p>eg3.匿名函数性质运用</p>
 <pre><code>var name = &#39;window&#39;
 
 var person = &#123;
@@ -610,6 +674,7 @@ var person = &#123;
         sum()，
 
         good: function sum2() &#123;
+
             console.log(this.name)
         &#125;
 
@@ -627,7 +692,7 @@ person.good()
 <li>good被person直接调用，this指向person</li>
 </ul>
 </blockquote>
-<p>eg3</p>
+<p>eg4.箭头函数this</p>
 <pre><code>var name=&#39;window&#39;;
 
 var obj = &#123;
@@ -649,7 +714,7 @@ obj.nameprintf()
 <li>nameprintf是箭头函数，this与父级元素obj的this绑定，而obj的this指向window，因此nameprintf的this也指向window</li>
 </ul>
 </blockquote>
-<p>eg4</p>
+<p>eg5.匿名函数和箭头函数结合</p>
 <pre><code>var name=&quot;window&quot;
 
 var obj=&#123;
