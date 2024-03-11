@@ -1,0 +1,802 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="KB">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="没想到当年哥们也能写出这样的文章🐶">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Javascript编码原则">
+<meta property="og:url" content="http://baidu.com/2023/01/07/howToWriteJS/index.html">
+<meta property="og:site_name" content="Kai&#39;s Blog">
+<meta property="og:description" content="没想到当年哥们也能写出这样的文章🐶">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2023/11/17/jmyPNBFWDgc9k5p.jpg">
+<meta property="article:published_time" content="2023-01-06T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-11-17T10:49:06.000Z">
+<meta property="article:author" content="KB">
+<meta property="article:tag" content="前端">
+<meta property="article:tag" content="js基础">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://s2.loli.net/2023/11/17/jmyPNBFWDgc9k5p.jpg">
+  
+  
+  
+  <title>Javascript编码原则 - Kai&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"baidu.com","root":"/","version":"1.9.5","typing":{"enable":true,"typeSpeed":60,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', '');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Kaiqing Liu</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://s2.loli.net/2023/11/17/REPTfmglk3GaJIO.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Javascript编码原则"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-01-07 00:00" pubdate>
+          2023年1月7日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          27 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Javascript编码原则</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="Javascript编码原则"><a href="#Javascript编码原则" class="headerlink" title="Javascript编码原则"></a>Javascript编码原则</h1><h2 id="一、-各司其职"><a href="#一、-各司其职" class="headerlink" title="一、 各司其职"></a>一、 各司其职</h2><p>结构行为分离，js中尽量少写样式修改，尽量只保留基本逻辑代码，用class操作css，这样代码更为简洁，可读性更强。简单逻辑甚至可以只使用css完成。总之应该避免js直接操作样式</p>
+<h2 id="二、-组件封装"><a href="#二、-组件封装" class="headerlink" title="二、 组件封装"></a>二、 组件封装</h2><p>注意组件复用性、拓展性，避免重复“造轮子”。<br>以轮播图为例，首先写好html结构</p>
+<pre><code class="hljs">&lt;template&gt;
+      &lt;div class=&#39;xtx-carousel&#39;&gt;
+        &lt;ul class=&quot;carousel-body&quot;&gt;
+          &lt;!-- 所有图片列表 --&gt;
+          &lt;li class=&quot;carousel-item fade&quot;&gt;
+            &lt;RouterLink to=&quot;/&quot;&gt;
+              &lt;img src=&quot;&quot; alt=&quot;&quot;&gt;
+            &lt;/RouterLink&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+        &lt;!-- 左箭头 --&gt;
+        &lt;a href=&quot;javascript:;&quot; class=&quot;carousel-btn prev&quot;&gt;&lt;i class=&quot;iconfont icon-angle-left&quot;&gt;&lt;/i&gt;&lt;/a&gt;
+        &lt;!-- 右箭头 --&gt;
+        &lt;a href=&quot;javascript:;&quot; class=&quot;carousel-btn next&quot;&gt;&lt;i class=&quot;iconfont icon-angle-right&quot;&gt;&lt;/i&gt;&lt;/a&gt;
+        &lt;!-- 计数器 --&gt;
+        &lt;div class=&quot;carousel-indicator&quot;&gt;
+          &lt;span v-for=&quot;i in 5&quot; :key=&quot;i&quot;&gt;&lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+&lt;/template&gt;
+</code></pre>
+<p>之后写好js框架，决定行为设计</p>
+<pre><code class="hljs">import &#123; ref &#125; from &#39;vue&#39;
+export default &#123;
+  name: &#39;swiper&#39;,
+  props: &#123;
+    sliders: &#123;
+      type: Array,
+      default: () =&gt; []
+    &#125;
+  &#125;,
+  setup () &#123;
+    // 记录图片的下标值变量
+    const index = ref(0)
+ 
+    return &#123; index &#125;
+  &#125;
+&#125;
+</code></pre>
+<p>最后使用css实现展示效果</p>
+<p>封装完成后的组件引用时只用写<code>&lt;Swiper&gt;&lt;Swiper/&gt;</code>,在react、vue中还可以进一步将轮播内容封装起来，使用<code>props.children</code>动态更改轮播内容，进一步增强复用性</p>
+<h2 id="三、-过程抽象"><a href="#三、-过程抽象" class="headerlink" title="三、 过程抽象"></a>三、 过程抽象</h2><p>可以将复杂的过程封装成函数，形成闭包直接调用，不需要在意过程细节，类似于api的调用，可以选择命令式、声明式的编程方式</p>
+<h2 id="四、-代码质量优化"><a href="#四、-代码质量优化" class="headerlink" title="四、 代码质量优化"></a>四、 代码质量优化</h2><h3 id="1、减少全局变量使用"><a href="#1、减少全局变量使用" class="headerlink" title="1、减少全局变量使用"></a>1、减少全局变量使用</h3><p>每个 JavaScript 执行环境都有一个全局对象 例如： 浏览器窗口的 window 对象, 可在函数外部使用 this 关键字进行访问。JavaScript 中在函数外部创建的每一个变量都是全局变量， 可以在整个执行环境中的各个地方使用 例如：下面的定义 globalVar 变量可以在代码块中的各个部分访问， 即使在不同的 script 标签内。<br>而在 function foo 中定义的 localVar 变量， 就只局限于 foo 函数的作用域内可以访问</p>
+<pre><code class="hljs">&lt;script&gt;
+    var globalVar = &#39;feifeiyu&#39;
+    function foo() &#123;
+        var localVar = &#39;feiyu&#39;
+        console.log(&#39;global foo:&#39;, globalVar) // =&gt; feifeiyu
+        console.log(&#39;local foo:&#39;, localVar)  // =&gt; feiyu
+    &#125;
+    console.log(&#39;global:&#39;, globalVar)  // =&gt; feifeiyu
+    console.log(&#39;global window1:&#39;, window.globalVar) // =&gt; feifeiyu
+    console.log(&#39;global window2:&#39;, window[&#39;globalVar&#39;])  // =&gt; feifeiyu
+    // console.log(&#39;local:&#39;, localVar) // error
+&lt;/script&gt;
+&lt;script&gt;
+    console.log(&#39;global2:&#39;, globalVar)
+&lt;/script&gt;
+</code></pre>
+<p>由上例中想到， 如果一个页面中如果有两块独立的代码中， 包含有相同名称的变量， 但却有着不同的作用时， 会引起程序运行出错。在其他的程序中为了解决这个问题引入了命名空间的概念， 例如： C++ 有个专门的关键字 namespace 来声明命名空间。在 JavaScript 中没这样的关键字来控制命名空间， 因此， 为了避免变量在全局作用域中冲突， 在同一个页面中应该尽可能地减少全局作用域中的使用。如何减少全局变量数量， 大致的解决方案有两种， 一种是人为去构造 JavaScript 的命名空间， 这种模式相对复杂不常用; 另一种是采用自执行即使函数(self-execting immediate funtionsl)来实现。</p>
+<h3 id="2、-关注变量提升"><a href="#2、-关注变量提升" class="headerlink" title="2、 关注变量提升"></a>2、 关注变量提升</h3><p>变量提升是 JavaScript 代码编写中容易忽略的一个点。JavaScript 允许在函数任意地方声明多个变量， 无论在哪里声明， 效果都等同于在函数顶部声明， 这就是变量提升（hoisting)。当先使用变量后定义变量，将会导致逻辑上的错误。例如：</p>
+<pre><code class="hljs">(function() &#123;
+    var myName = &#39;feifeiyu&#39;
+    function func() &#123;
+        console.log(&#39;myName 1:&#39;, myName)  // =&gt; myName 1: undefined
+        var myName = &#39;feiyu&#39;
+        console.log(&#39;myName 2:&#39;, myName)  // =&gt; myName 2: feiyu
+    &#125;
+&#125;())
+</code></pre>
+<p>上述代码执行后， 安装开发者的意图， 第一个console 输出的应该是 myName 1: feifeiyu, 第二个 console 输出的应该是 feiyu, 然而意想不到的结果出现了， 第一个 console 输出的是 undefined。 导致这个的元凶是 JavaScript 的变量提升， JavaScript 解释器在执行时， 函数中的 myName 会提升到函数 func 最顶部去定义， 本质上述代码是按如下逻辑去执行的：</p>
+<pre><code class="hljs">(function() &#123;
+    var myName = &#39;feifeiyu&#39;
+    function func() &#123;
+        var myName  //此时 myName 是 undefined
+        console.log(&#39;myName 1:&#39;, myName)  // =&gt; myName 1: undefined
+        myName = &#39;feiyu&#39;
+        console.log(&#39;myName 2:&#39;, myName)  // =&gt; myName 2: feiyu
+    &#125;
+&#125;())
+</code></pre>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%89%8D%E7%AB%AF/" class="category-chain-item">前端</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%89%8D%E7%AB%AF/js%E5%9F%BA%E7%A1%80/" class="category-chain-item">js基础</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%89%8D%E7%AB%AF/" class="print-no-link">#前端</a>
+      
+        <a href="/tags/js%E5%9F%BA%E7%A1%80/" class="print-no-link">#js基础</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Javascript编码原则</div>
+      <div>http://baidu.com/2023/01/07/howToWriteJS/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>KB</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年1月7日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/03/03/useReducer/" title="useReducer 和 useContext">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">useReducer 和 useContext</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/11/27/this/" title="重定义this的方法">
+                        <span class="hidden-mobile">重定义this的方法</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'konodioda727/konodioda727');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

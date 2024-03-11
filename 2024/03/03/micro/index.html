@@ -1,0 +1,975 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="KB">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="好复杂😣">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微前端">
+<meta property="og:url" content="http://baidu.com/2024/03/03/micro/index.html">
+<meta property="og:site_name" content="Kai&#39;s Blog">
+<meta property="og:description" content="好复杂😣">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img2.imgtp.com/2024/03/06/69TuzBNB.jpg">
+<meta property="article:published_time" content="2024-03-02T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-03-06T14:19:06.000Z">
+<meta property="article:author" content="KB">
+<meta property="article:tag" content="前端">
+<meta property="article:tag" content="js进阶">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://img2.imgtp.com/2024/03/06/69TuzBNB.jpg">
+  
+  
+  
+  <title>微前端 - Kai&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"baidu.com","root":"/","version":"1.9.5","typing":{"enable":true,"typeSpeed":60,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', '');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Kaiqing Liu</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://img2.imgtp.com/2024/03/06/DPEqqCtq.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="微前端"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-03-03 00:00" pubdate>
+          2024年3月3日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          18k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          152 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">微前端</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="微前端入门🍔"><a href="#微前端入门🍔" class="headerlink" title="微前端入门🍔"></a>微前端入门🍔</h1><h2 id="1-啥是微前端？🥰"><a href="#1-啥是微前端？🥰" class="headerlink" title="1. 啥是微前端？🥰"></a>1. 啥是微前端？🥰</h2><p>微前端这个 <code>idea</code> 其实和<code>router</code>一样，也是从后端那里偷过来的。</p>
+<p>偷师的东西你们可能也听说过，就是大名鼎鼎的<code>微服务(micro web service)</code></p>
+<p>那啥是微服务嘞？简单来说，就是把原来庞大的系统，拆成一个个细小的服务，放在<code>分布式系统</code>上边。</p>
+<blockquote>
+<p>举个🌰的话，就相当于你把一整块大列巴切开，然后放在不同的柜子里（大列巴好吃爱吃🥰）</p>
+</blockquote>
+<p>这么说是不是有点概念了，那好，<code>微服务</code>介绍好了，现在就看看咱们的<code>微前端</code>是咋个事咯：</p>
+<ul>
+<li>前边说了这么多，那一想肯定是得把工程拆开咯，现在一般是拆成两个大块：<ul>
+<li>主应用：负责管理各个子应用的<code>生命周期</code>，<code>注册</code></li>
+<li>子应用：具体实现各个页面</li>
+</ul>
+</li>
+</ul>
+<p>在主应用里，可以看到，要干的事情和<code>router</code>是极其类似的，实际上，个人感觉微前端就是<code>router-pro-max</code>，只不过要考虑的方面更加多更加全面，待会再细说</p>
+<h2 id="2-那为啥要用微前端嘞，写一块不好吗？😶"><a href="#2-那为啥要用微前端嘞，写一块不好吗？😶" class="headerlink" title="2. 那为啥要用微前端嘞，写一块不好吗？😶"></a>2. 那为啥要用微前端嘞，写一块不好吗？😶</h2><blockquote>
+<p>还是那个🌰，想一下，你把一块大列巴切开了放可能带来的好处：</p>
+<ul>
+<li>每个柜子的压力会变小</li>
+<li>如果有一块大列巴坏了，其他的也不会受影响</li>
+<li>如果有天想换个口味，那把其中一块大列巴换成土豆，也很方便呀</li>
+</ul>
+</blockquote>
+<p>那就一条一条来看咯：</p>
+<ul>
+<li>把不同页面放到不同服务器上，单个服务器的压力肯定会减小（虽然主要压力不在这）</li>
+<li>如果一个页面出现了问题，其他的页面不受影响，不会像传统单体那样<code>一挂全挂</code></li>
+<li>各个页面独立，出了问题维护很方便</li>
+<li>由于各个页面独立，因此项目可以选用不同的技术栈，比如<code>登录</code>用<code>react</code>写，<code>发帖</code>用<code>vue</code>写；不仅如此，还可以根据需求，灵活选择<code>ssr</code>还是<code>csr</code>，这真的很酷🐶</li>
+</ul>
+<p><strong>但是有优点，就会伴随着难点和缺点</strong></p>
+<ul>
+<li>不同页面如何通信？</li>
+<li>每个页面都有一套依赖库，性能如何优化？如何共享依赖库？</li>
+<li>如何确定应用边界？</li>
+<li>……</li>
+</ul>
+<p>但是这些，今天都不讲😝</p>
+<p>主要原因是我不会，次要原因是太复杂了，讲不完（或许主要原因是这个😙）</p>
+<h2 id="3-目前微前端实现🤩"><a href="#3-目前微前端实现🤩" class="headerlink" title="3. 目前微前端实现🤩"></a>3. 目前微前端实现🤩</h2><p>微前端的实现方案有挺多，比如说：</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://github.com/umijs/qiankun">qiankun</a>，自己实现 JS 及样式隔离</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/ice-lab/icestark">icestark</a>，iframe 方案，浏览器原生隔离，但存在一些问题</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/efoxTeam/emp">emp</a>，Webpack 5 Module Federation（联邦模块）方案</li>
+<li>WebComponent 等方案</li>
+</ol>
+<p>但是这么多实现方案解决的场景问题还是分为两类：</p>
+<ul>
+<li>单实例：当前页面只存在一个子应用，一般使用 qiankun 就行</li>
+<li>多实例：当前页面存在多个子应用，可以使用浏览器原生隔离方案，比如 iframe 或者 WebComponent 这些</li>
+</ul>
+<p>当然了，并不是说单实例只能用 qiankun，浏览器原生隔离方案也是可行的，只要你接受它们带来的不足就行：</p>
+<blockquote>
+<p>iframe 最大的特性就是提供了浏览器原生的硬隔离方案，不论是样式隔离、js 隔离这类问题统统都能被完美解决。但他的最大问题也在于他的隔离性无法被突破，导致应用间上下文无法被共享，随之带来的开发体验、产品体验的问题。</p>
+</blockquote>
+<p>上述内容摘自<a target="_blank" rel="noopener" href="https://www.yuque.com/kuitos/gky7yw/gesexv">Why Not Iframe</a>。</p>
+<p>本文的实现方案和 qiankun 一致，但是其中涉及到的功能及原理方面的东西都是通用的，你换个实现方案也需要这些。</p>
+<h2 id="4-话不多说，上手吧🥱"><a href="#4-话不多说，上手吧🥱" class="headerlink" title="4. 话不多说，上手吧🥱"></a>4. 话不多说，上手吧🥱</h2><blockquote>
+<p><em><strong>讲讲思路先：</strong></em></p>
+<p>不同页面在不同服务器上，我们通过<code>主应用</code>进入程序，那接下来访问子页面其实要干的事情就是<strong>向子应用的服务器发个请求，拿到它的html\css\js等文件，插入进来执行</strong></p>
+<p>没别的，简单粗暴吧，开干咯</p>
+</blockquote>
+<h3 id="🤗首先，得有个主应用吧"><a href="#🤗首先，得有个主应用吧" class="headerlink" title="🤗首先，得有个主应用吧"></a>🤗首先，得有个主应用吧</h3><p>随随便便创一个得了，跑在<code>5173</code>这个默认口上。</p>
+<p>再随随便便创一个子应用，（我这里子应用还是上次的<code>todo-list</code>），跑在<code>10086</code>端口</p>
+<h3 id="🤔然后，就要动脑子啦，主页面该如何配置子页面呢？"><a href="#🤔然后，就要动脑子啦，主页面该如何配置子页面呢？" class="headerlink" title="🤔然后，就要动脑子啦，主页面该如何配置子页面呢？"></a>🤔然后，就要动脑子啦，主页面该如何配置子页面呢？</h3><p>咱们首先看看子页面需要什么功能咯，记得之前说过和<code>router</code>很相似吗，那就看看<code>router</code>有什么功能咯：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs jsx">&lt;<span class="hljs-title class_">Route</span> exact path=<span class="hljs-string">&quot;/&quot;</span> component=&#123;<span class="hljs-title class_">Home</span>&#125; /&gt;  <br></code></pre></td></tr></table></figure>
+
+<p>可以看到有: <code>path</code>， 和 <code>component</code>两个<code>prop</code>，</p>
+<p>那在现在的话，就相当于<code>path</code>和<code>子页面服务器路径咯</code></p>
+<blockquote>
+<p>其实叫<code>path</code>有失偏颇，它其实是一个匹配规则，而不是简单的<code>path</code></p>
+<p>所以我接下来采用<code>activateRule</code>代替<code>path</code></p>
+</blockquote>
+<p><em><strong>这就完了？怎么可能！</strong></em></p>
+<p>挂载页面挂载到哪里还没考虑呢！所以还得加一个<code>container</code>属性存放挂载位置,</p>
+<p>那现在我们就有了一个基本的<code>子页面配置</code>：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">AppInfo</span> &#123;<br>    <span class="hljs-attr">entry</span>: <span class="hljs-built_in">string</span>,<br>    <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>,<br>    <span class="hljs-attr">container</span>: <span class="hljs-built_in">string</span>,<br>    <span class="hljs-attr">activeRule</span>: <span class="hljs-built_in">string</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p><em><strong>这就完了？怎么可能！</strong></em></p>
+<p>开动小脑瓜想想，除了<code>router</code>本身的特性，<code>component</code>也有自己的闪光点：<code>生命周期</code>，页面也是需要生命周期的，而且还要分为</p>
+<ul>
+<li><p>主体生命周期：组件挂载前、挂载完毕、卸载</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// /types/type.ts</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> <span class="hljs-title class_">MainLifeCycle</span> = &#123;<br>    beforeLoad?: <span class="hljs-title class_">LifeCycleFunc</span> | <span class="hljs-title class_">LifeCycleFunc</span>[],<br>    mounted?: <span class="hljs-title class_">LifeCycleFunc</span> | <span class="hljs-title class_">LifeCycleFunc</span>[],<br>    unmounted?: <span class="hljs-title class_">LifeCycleFunc</span> | <span class="hljs-title class_">LifeCycleFunc</span>[]<br>&#125;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> <span class="hljs-title class_">LifeCycleFunc</span> = <span class="hljs-function">(<span class="hljs-params">app: AppInfo</span>) =&gt;</span> <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-built_in">any</span>&gt;<br></code></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>单独页面声明周期：这个就多了，想要几个要几个，这里图方便，写了三个，跟子页面其他属性混一起得了</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// /types/type.ts</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">ChildAppInfo</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">AppInfo</span> &#123;<br>    <span class="hljs-attr">status</span>: <span class="hljs-title class_">AppStatus</span>,<br>    bootstrap?: <span class="hljs-title class_">LifeCycleFunc</span>, <span class="hljs-comment">//构建中</span><br>    mount?: <span class="hljs-title class_">LifeCycleFunc</span>, <span class="hljs-comment">// 挂载完毕</span><br>    unmount?: <span class="hljs-title class_">LifeCycleFunc</span>, <span class="hljs-comment">// 卸载</span><br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>这个<code>status</code>就是组件的详细状态咯，初始值为<code>AppStatus.NOT_LOADED</code></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// /types/enum.ts</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">enum</span> <span class="hljs-title class_">AppStatus</span> &#123;<br>    <span class="hljs-variable constant_">NOT_LOADED</span> = <span class="hljs-string">&quot;NOT_LOADED&quot;</span>,<br>    <span class="hljs-variable constant_">LOADING</span> = <span class="hljs-string">&quot;LOADING&quot;</span>,<br>    <span class="hljs-variable constant_">LOADED</span> = <span class="hljs-string">&quot;LOADED&quot;</span>,<br>    <span class="hljs-variable constant_">BOOTSTRAPPING</span> = <span class="hljs-string">&quot;BOOTSTRAPPING&quot;</span>,<br>    <span class="hljs-variable constant_">NOT_MOUNTED</span> = <span class="hljs-string">&quot;NOT_MOUNTED&quot;</span>, <span class="hljs-comment">// bootstarp过后还未mount</span><br>    <span class="hljs-variable constant_">MOUNTING</span> = <span class="hljs-string">&quot;MOUNTING&quot;</span>,<br>    <span class="hljs-variable constant_">MOUNTED</span> = <span class="hljs-string">&quot;MOUNTED&quot;</span>,<br>    <span class="hljs-variable constant_">UNMOUNTING</span> = <span class="hljs-string">&quot;UNMOUNTING&quot;</span>,<br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<p><strong>每次挂载、卸载页面的时候，都要分别调用子页面和主体的的声明周期函数</strong></p>
+<p>为此，封装了几个生命周期的执行函数：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// /lifeCycle/index.ts</span><br><span class="hljs-keyword">import</span> &#123;<span class="hljs-title class_">ChildAppInfo</span>, <span class="hljs-title class_">MainLifeCycle</span>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../types/type.ts&quot;</span>;<br><span class="hljs-keyword">import</span> &#123;<span class="hljs-title class_">AppStatus</span>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../types/enum.ts&quot;</span>;<br><span class="hljs-keyword">import</span> &#123;loadHTML&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../loader&quot;</span>;<br><br><span class="hljs-keyword">let</span> <span class="hljs-attr">lifeCycle</span>: <span class="hljs-title class_">MainLifeCycle</span> = &#123;&#125;;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title function_">setLifeCycle</span> = (<span class="hljs-params">list: MainLifeCycle</span>) =&gt; &#123;<br>    lifeCycle = list;<br>&#125;;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title function_">runBeforeLoad</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params">app: ChildAppInfo</span>) =&gt; &#123;<br>    app.<span class="hljs-property">status</span> = <span class="hljs-title class_">AppStatus</span>.<span class="hljs-property">LOADING</span>;<br>    <span class="hljs-keyword">await</span> <span class="hljs-title function_">runLifeCycle</span>(<span class="hljs-string">&quot;beforeLoad&quot;</span>, app);<br><br>    app = <span class="hljs-keyword">await</span> <span class="hljs-title function_">loadHTML</span>(app); <span class="hljs-comment">// 加载HTML文件的，马上讲</span><br>    app.<span class="hljs-property">status</span> = <span class="hljs-title class_">AppStatus</span>.<span class="hljs-property">LOADED</span>;<br>&#125;;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title function_">runBoostrap</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params">app: ChildAppInfo</span>) =&gt; &#123;<br>    <span class="hljs-keyword">if</span> (app.<span class="hljs-property">status</span> !== <span class="hljs-title class_">AppStatus</span>.<span class="hljs-property">LOADED</span>) &#123;<br>        <span class="hljs-keyword">return</span> app;<br>    &#125;<br>    app.<span class="hljs-property">status</span> = <span class="hljs-title class_">AppStatus</span>.<span class="hljs-property">BOOTSTRAPPING</span>;<br>    <span class="hljs-keyword">await</span> app.<span class="hljs-property">bootstrap</span>?.(app);<br>    app.<span class="hljs-property">status</span> = <span class="hljs-title class_">AppStatus</span>.<span class="hljs-property">NOT_MOUNTED</span>;<br>&#125;;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title function_">runMounted</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params">app: ChildAppInfo</span>) =&gt; &#123;<br>    app.<span class="hljs-property">status</span> = <span class="hljs-title class_">AppStatus</span>.<span class="hljs-property">MOUNTING</span>;<br>    <span class="hljs-keyword">await</span> app.<span class="hljs-property">mount</span>?.(app);<br>    app.<span class="hljs-property">status</span> = <span class="hljs-title class_">AppStatus</span>.<span class="hljs-property">MOUNTED</span>;<br>    <span class="hljs-keyword">await</span> <span class="hljs-title function_">runLifeCycle</span>(<span class="hljs-string">&quot;mounted&quot;</span>, app);<br>&#125;;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title function_">runUnmounted</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params">app: ChildAppInfo</span>) =&gt; &#123;<br>    app.<span class="hljs-property">status</span> = <span class="hljs-title class_">AppStatus</span>.<span class="hljs-property">UNMOUNTING</span>;<br>    <span class="hljs-keyword">await</span> app.<span class="hljs-property">unmount</span>?.(app);<br>    app.<span class="hljs-property">status</span> = <span class="hljs-title class_">AppStatus</span>.<span class="hljs-property">NOT_MOUNTED</span>;<br>    <span class="hljs-keyword">await</span> <span class="hljs-title function_">runLifeCycle</span>(<span class="hljs-string">&quot;unmounted&quot;</span>, app);<br>&#125;;<br><br><span class="hljs-keyword">const</span> <span class="hljs-title function_">runLifeCycle</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params">name: keyof MainLifeCycle, app: ChildAppInfo</span>) =&gt; &#123;<br>    <span class="hljs-keyword">const</span> fn = lifeCycle[name];<br>    <span class="hljs-keyword">if</span> (fn <span class="hljs-keyword">instanceof</span> <span class="hljs-title class_">Array</span>) &#123;<br>        <span class="hljs-keyword">await</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">all</span>(fn.<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">item</span>) =&gt;</span> <span class="hljs-title function_">item</span>(app)));<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-keyword">await</span> fn?.(app);<br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>看似很长，其实就是改变<code>子页面</code>的状态，并执行相应的回调函数，再调用<code>主体声明周期</code></p>
+<blockquote>
+<p><strong>注意：</strong></p>
+<p><code>beforeLoad</code>这个生命周期，是在页面挂载之前执行的，所以<code>beforeLoad</code>执行比页面本身生命周期还要前边，<strong>注意执行顺序</strong></p>
+</blockquote>
+<h3 id="相信大家也注意到那个loadHTML了，那就先来讲讲怎么loadHTML吧😏"><a href="#相信大家也注意到那个loadHTML了，那就先来讲讲怎么loadHTML吧😏" class="headerlink" title="相信大家也注意到那个loadHTML了，那就先来讲讲怎么loadHTML吧😏"></a>相信大家也注意到那个<code>loadHTML</code>了，那就先来讲讲怎么<code>loadHTML</code>吧😏</h3><p>其实相当简单，直接向服务器发个<code>fetch</code>就行了，</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// /loader/index.ts</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title function_">loadHTML</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params">app: ChildAppInfo</span>) =&gt; &#123;<br>    <span class="hljs-keyword">const</span> &#123; container, entry &#125; = app<br>    <span class="hljs-keyword">const</span> htmlFile = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetchResource</span>(entry)<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(htmlFile)<br>    <span class="hljs-keyword">return</span> app<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// /utils/fetchHTMlL.ts</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title function_">fetchResource</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params">url: <span class="hljs-built_in">string</span></span>) =&gt; &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(url).<span class="hljs-title function_">then</span>(<span class="hljs-keyword">async</span> (res) =&gt; <span class="hljs-keyword">await</span> res.<span class="hljs-title function_">text</span>())<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这就简单完成了一个fetch拿回HTML文件的功能咯，</p>
+<p>那这个函数先放在这里好了，之后再给它丰富功能，比如解析执行js什么的</p>
+<p><em><strong>别忘了解决跨域！！！</strong></em></p>
+<h3 id="写完这么多函数，总得调用一下吧，但是先别急，先把页面啥的挂上去🤨"><a href="#写完这么多函数，总得调用一下吧，但是先别急，先把页面啥的挂上去🤨" class="headerlink" title="写完这么多函数，总得调用一下吧，但是先别急，先把页面啥的挂上去🤨"></a>写完这么多函数，总得调用一下吧，但是先别急，先把页面啥的挂上去🤨</h3><p>简简单单写一个<code>appList</code>，把子页面的配置信息都写里边，到时候<code>forEach</code>就好咯,注意要设置<code>status</code>默认值!</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// /appList/index.ts</span><br><span class="hljs-keyword">import</span> &#123;<span class="hljs-title class_">AppInfo</span>, <span class="hljs-title class_">ChildAppInfo</span>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../types/type.ts&quot;</span>;<br><span class="hljs-keyword">import</span> &#123;<span class="hljs-title class_">AppStatus</span>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../types/enum.ts&quot;</span>;<br><br><span class="hljs-keyword">let</span> <span class="hljs-attr">appList</span>: <span class="hljs-title class_">AppInfo</span>[] = [];<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title function_">setAppList</span> = (<span class="hljs-params">list: AppInfo[]</span>) =&gt; &#123;<br>    appList = list;<br>    appList.<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">app</span>) =&gt;</span> &#123;<br>        (app <span class="hljs-keyword">as</span> <span class="hljs-title class_">ChildAppInfo</span>).<span class="hljs-property">status</span> = <span class="hljs-title class_">AppStatus</span>.<span class="hljs-property">NOT_LOADED</span><br>    &#125;)<br>&#125;;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title function_">getAppList</span> = (<span class="hljs-params"></span>) =&gt; &#123;<br>    <span class="hljs-keyword">return</span> appList;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>然后再写一个注册页面的函数：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// /start.ts</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title function_">registerMicroApps</span> = (<span class="hljs-params">appList: AppInfo[], mainLifeCycle?: MainLifeCycle</span>) =&gt; &#123;<br>    <span class="hljs-title function_">setAppList</span>(appList)<br>    mainLifeCycle &amp;&amp; <span class="hljs-title function_">setLifeCycle</span>(mainLifeCycle)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这个函数跟大家想象的不太一样喔，他要在主页面里调用，也就是咱们的<code>react</code>文件中</p>
+<figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs tsx"><span class="hljs-comment">// /main.tsx</span><br><span class="hljs-keyword">import</span> <span class="hljs-title class_">React</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span><br><span class="hljs-keyword">import</span> <span class="hljs-title class_">ReactDOM</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react-dom/client&#x27;</span><br><span class="hljs-keyword">import</span> <span class="hljs-title class_">App</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./App.tsx&#x27;</span><br><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;./index.css&#x27;</span><br><span class="hljs-keyword">import</span> &#123;registerMicroApps, start&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./start.ts&quot;</span>;<br><br><span class="hljs-title class_">ReactDOM</span>.<span class="hljs-title function_">createRoot</span>(<span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">&#x27;root&#x27;</span>)!).<span class="hljs-title function_">render</span>(<br>  <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">React.StrictMode</span>&gt;</span></span><br><span class="language-xml">    <span class="hljs-tag">&lt;<span class="hljs-name">App</span> /&gt;</span></span><br><span class="language-xml">  <span class="hljs-tag">&lt;/<span class="hljs-name">React.StrictMode</span>&gt;</span></span>,<br>)<br><br><span class="hljs-keyword">const</span> appList = [<br>    &#123;<br>        <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;todo&#x27;</span>,<br>        <span class="hljs-attr">activeRule</span>: <span class="hljs-string">&#x27;/todo&#x27;</span>,<br>        <span class="hljs-attr">container</span>: <span class="hljs-string">&#x27;#micro-container&#x27;</span>,<br>        <span class="hljs-attr">entry</span>: <span class="hljs-string">&#x27;http://localhost:10086&#x27;</span>,<br>    &#125;,<br>]<br><br><span class="hljs-title function_">registerMicroApps</span>(appList)<br></code></pre></td></tr></table></figure>
+
+<p>到现在为止，咱们已经配置好咱们的子页面啦，现在跑跑看咯！当然什么都没有啦！页面还没挂上呢，声明周期也没加，文件也没获取，还有好长的路要走😣</p>
+<h3 id="考虑一个问题，如何在appList中挑出要渲染的页面嘞？🥲"><a href="#考虑一个问题，如何在appList中挑出要渲染的页面嘞？🥲" class="headerlink" title="考虑一个问题，如何在appList中挑出要渲染的页面嘞？🥲"></a>考虑一个问题，如何在appList中挑出要渲染的页面嘞？🥲</h3><p>捋捋思路：</p>
+<p>咱们的子页面配置里不是有<code>actiavteRule</code>这一项吗，就用它!</p>
+<p>把<code>appList</code>遍历一遍，如果<code>activateRule</code>匹配当前路径的话，要做点什么；如果不匹配的话，可能也要做点什么（废话）</p>
+<blockquote>
+<p>仔细想想咯，当切换页面的时候，比如说从<code>/</code>切换到<code>/todo</code>，是不是要把原来的页面先<code>unmount</code>，再去<code>mount</code>新页面；那如何判断哪个页面是当前页面呢？或者说，如何匹配当前页面呢？</p>
+<p>欸，<code>react-router-dom</code>使用了<a target="_blank" rel="noopener" href="https://www.npmjs.com/package/path-to-regexp">path-to-regexp</a>这个库，看了下，相当好用,感兴趣的可以看看，但是我们现在只需要知道它的一个调用就行了：</p>
+<p><img src="https://s2.loli.net/2024/03/03/78UYVOkJB6XxmHp.png" srcset="/img/loading.gif" lazyload alt="别人博客偷的图"></p>
+<p>再加上<code>location.href</code>，我们很容易能写出</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">const</span> isActive = <span class="hljs-title function_">match</span>(app.<span class="hljs-property">activeRule</span>, &#123; <span class="hljs-attr">end</span>: <span class="hljs-literal">false</span> &#125;)(location.<span class="hljs-property">pathname</span>)<br></code></pre></td></tr></table></figure>
+
+<p>判断是否<code>active</code>，再根据页面当前状态，判断要做什么操作，是挂载还是卸载</p>
+</blockquote>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// /utils/getAppStatus.ts</span><br><span class="hljs-keyword">import</span> &#123;<span class="hljs-title class_">ChildAppInfo</span>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../types/type.ts&quot;</span>;<br><span class="hljs-keyword">import</span> &#123;getAppList&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../appList&quot;</span>;<br><span class="hljs-keyword">import</span> &#123;<span class="hljs-title class_">AppStatus</span>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../types/enum.ts&quot;</span>;<br><span class="hljs-keyword">import</span> &#123;match&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;path-to-regexp&quot;</span>;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title function_">getAppListStatus</span> = (<span class="hljs-params"></span>) =&gt; &#123;<br>    <span class="hljs-keyword">const</span> <span class="hljs-attr">actives</span>: <span class="hljs-title class_">ChildAppInfo</span>[] = []<br>    <span class="hljs-keyword">const</span> <span class="hljs-attr">unmounts</span>: <span class="hljs-title class_">ChildAppInfo</span>[] = []<br>    <span class="hljs-keyword">const</span> list = <span class="hljs-title function_">getAppList</span>() <span class="hljs-keyword">as</span> <span class="hljs-title class_">ChildAppInfo</span>[]<br>    list.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">app</span>) =&gt;</span> &#123;<br>        <span class="hljs-keyword">const</span> isActive = <span class="hljs-title function_">match</span>(app.<span class="hljs-property">activeRule</span>, &#123; <span class="hljs-attr">end</span>: <span class="hljs-literal">false</span> &#125;)(location.<span class="hljs-property">pathname</span>)<br>        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(isActive, app)<br>        <span class="hljs-keyword">switch</span> (app.<span class="hljs-property">status</span>) &#123;<br>            <span class="hljs-keyword">case</span> <span class="hljs-title class_">AppStatus</span>.<span class="hljs-property">NOT_LOADED</span>:<br>            <span class="hljs-keyword">case</span> <span class="hljs-title class_">AppStatus</span>.<span class="hljs-property">LOADING</span>:<br>            <span class="hljs-keyword">case</span> <span class="hljs-title class_">AppStatus</span>.<span class="hljs-property">LOADED</span>:<br>            <span class="hljs-keyword">case</span> <span class="hljs-title class_">AppStatus</span>.<span class="hljs-property">BOOTSTRAPPING</span>:<br>            <span class="hljs-keyword">case</span> <span class="hljs-title class_">AppStatus</span>.<span class="hljs-property">NOT_MOUNTED</span>:<br>                isActive &amp;&amp; actives.<span class="hljs-title function_">push</span>(app)<br>                <span class="hljs-keyword">break</span><br>            <span class="hljs-keyword">case</span> <span class="hljs-title class_">AppStatus</span>.<span class="hljs-property">MOUNTED</span>:<br>                !isActive &amp;&amp; unmounts.<span class="hljs-title function_">push</span>(app)<br>                <span class="hljs-keyword">break</span><br>        &#125;<br>    &#125;)<br><br>    <span class="hljs-keyword">return</span> &#123; actives, unmounts &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>通过这个工具函数，我们就得到了<code>actives</code> 和<code>unmounts</code>这俩数组，之后对<code>unmounts</code>数组以此<code>unmount</code>，对<code>actives</code>依次执行一套声明周期就完事咯，用伪代码大概是这个样子，到时候把这个封装进函数就行咯</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">const</span> &#123; actives, unmounts &#125; = <span class="hljs-title function_">getAppListStatus</span>()<br>        <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">all</span>(<br>            unmounts<br>                .<span class="hljs-title function_">map</span>(<span class="hljs-keyword">async</span> (<span class="hljs-attr">app</span>: <span class="hljs-title class_">ChildAppInfo</span>) =&gt; &#123;<br>                    <span class="hljs-keyword">await</span> <span class="hljs-title function_">runUnmounted</span>(app)<br>                &#125;)<br>                .<span class="hljs-title function_">concat</span>(<br>                    actives.<span class="hljs-title function_">map</span>(<span class="hljs-keyword">async</span> (<span class="hljs-attr">app</span>: <span class="hljs-title class_">ChildAppInfo</span>) =&gt; &#123;<br>                        <span class="hljs-keyword">await</span> <span class="hljs-title function_">runBeforeLoad</span>(app)<br>                        <span class="hljs-keyword">await</span> <span class="hljs-title function_">runBoostrap</span>(app)<br>                        <span class="hljs-keyword">await</span> <span class="hljs-title function_">runMounted</span>(app)<br>                    &#125;)<br>                )<br>        ).<span class="hljs-title function_">then</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>            <span class="hljs-comment">// ...要做的操作</span><br>        &#125;)<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="别看现在形式一片大好，其实真正的难点还藏着呢🙄路由劫持来咯"><a href="#别看现在形式一片大好，其实真正的难点还藏着呢🙄路由劫持来咯" class="headerlink" title="别看现在形式一片大好，其实真正的难点还藏着呢🙄路由劫持来咯"></a>别看现在形式一片大好，其实真正的难点还藏着呢🙄路由劫持来咯</h3><p>其实这个难点就是最基础的–<strong>如何根据url加载和切换页面？</strong></p>
+<p>嘿嘿，这就是另一个知识点咯</p>
+<blockquote>
+<p>想想<code>React-Router-Dom</code>中是不是有<code>BrowserRouter</code>和<code>HashRouter</code>，其实他俩就对应着 JS 中 的<code>HashRouter</code>和<code>History</code>，二者有些许差别。老web通常是<code>HashRouter</code>，新web基本都是<code>History</code>。二者api也有差异，我就不自己写了，以下内容摘自：<a target="_blank" rel="noopener" href="https://juejin.cn/post/7044530785746944014">https://juejin.cn/post/7044530785746944014</a></p>
+</blockquote>
+<h3 id="reactRouter实现路由的两种模式"><a href="#reactRouter实现路由的两种模式" class="headerlink" title="reactRouter实现路由的两种模式"></a>reactRouter实现路由的两种模式</h3><ul>
+<li><p>hash模式(对应HashRouter)</p>
+<p><code>www.test.com/#/name</code> 就是 <code>Hash URL</code>，当 <code>#</code> 后面的哈希值发生变化时，不会向服务器请求数据，可以通过 <code>hashchange</code> 事件来监听到 <code>URL</code> 的变化，从而进行跳转页面。</p>
+</li>
+<li><p>browser模式(对应BrowserRouter)</p>
+<p><code>History</code>模式使用 HTML5 提供的 history API（pushState、replaceState 和 popstate 事件）来保持 UI 和 URL 的同步</p>
+</li>
+</ul>
+<h3 id="两种实现方式的区别是什么？"><a href="#两种实现方式的区别是什么？" class="headerlink" title="两种实现方式的区别是什么？"></a>两种实现方式的区别是什么？</h3><ul>
+<li><p>兼容性问题</p>
+<p>一看到browser模式是html5新推出的功能，就可以知道区别主要是<code>兼容性</code>问题，browser模式主要是在高版本浏览器使用的，hash模式主要是在老版本浏览器使用的，</p>
+</li>
+<li><p>写法的不同</p>
+<p>BrowserRouter 创建的 URL 格式：<a href="https://link.juejin.cn/?target=http://xxx.com/path">xxx.com&#x2F;path</a></p>
+<p>HashRouter 创建的 URL 格式：<a href="https://link.juejin.cn/?target=http://xxx.com/%23/path">xxx.com&#x2F;#&#x2F;path</a></p>
+</li>
+</ul>
+<h3 id="history中新增的方法"><a href="#history中新增的方法" class="headerlink" title="history中新增的方法"></a>history中新增的方法</h3><h4 id="pushState-state-title-url"><a href="#pushState-state-title-url" class="headerlink" title="pushState(state,title,url)"></a>pushState(state,title,url)</h4><p>该方法的作用是 在历史记录中新增一条记录，改变浏览器地址栏的url,<strong>但是，不刷新页面</strong>。</p>
+<p>pushState对象接受三个参数，</p>
+<ul>
+<li>state：一个与添加的记录相关联的状态对象，主要用于popstate事件。该事件触发时，该对象会传入回调<a href="https://link.juejin.cn/?target=http://www.fly63.com/tag/%E5%87%BD%E6%95%B0">函数</a>。也就是说，浏览器会将这个对象序列化以后保留在本地，重新载入这个页面的时候，可以拿到这个对象。如果不需要这个对象，此处可以填null。</li>
+<li>title：新页面的标题。但是，现在所有浏览器都忽视这个参数，所以这里可以填空字符串。</li>
+<li>url：新的网址，必须与当前页面处在同一个域。浏览器的地址栏将显示这个网址。</li>
+</ul>
+<p>举个例子，假设当前网址是hello.com&#x2F;1.html,使用pushState()方法在浏览记录中添加一个新纪录</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs csharp">csharp复制代码<span class="hljs-keyword">var</span> stateObj=&#123;foo:<span class="hljs-string">&#x27;bar&#x27;</span>&#125;<br>history.pushState(starteObj,<span class="hljs-string">&#x27;&#x27;</span>,<span class="hljs-string">&#x27;2.html&#x27;</span>)<br></code></pre></td></tr></table></figure>
+
+<p>添加新纪录后，浏览器的地址栏立刻显示&#96;hello.com&#x2F;2.html,但不会跳转到2.html,也不会检查2.html是否存在，它只是成为浏览历史中的最新记录。</p>
+<p>总之，pushState()方法不会触发页面刷新，只是导致history对象发生变化，地址栏会有反应，使用该方法后，就可以使用history.state属性读出状态对象</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs csharp">csharp复制代码<span class="hljs-keyword">var</span> stateObj=&#123;foo:<span class="hljs-string">&#x27;bar&#x27;</span>&#125;<br>history.pushState(starteObj,<span class="hljs-string">&#x27;&#x27;</span>,<span class="hljs-string">&#x27;2.html&#x27;</span>)<br>history.state <span class="hljs-comment">//=&gt; &#123;foo:&quot;bar&quot;&#125;</span><br></code></pre></td></tr></table></figure>
+
+<p>注意：如果pushState的URL参数设置了一个新的hash值，并不会触发hashchange事件。</p>
+<h4 id="replaceState-state-title-url"><a href="#replaceState-state-title-url" class="headerlink" title="replaceState(state,title,url)"></a>replaceState(state,title,url)</h4><p>replaceState方法的作用是替换当前的历史记录，其他的都与pushState()方法一模一样。</p>
+<p>假定当前网页是example.com&#x2F;example.html。</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs ruby">ruby复制代码history.pushState(&#123;<span class="hljs-symbol">page:</span> <span class="hljs-number">1</span>&#125;, <span class="hljs-string">&#x27;title 1&#x27;</span>, <span class="hljs-string">&#x27;?page=1&#x27;</span>)<br>/<span class="hljs-regexp">/ URL 显示为 http:/</span><span class="hljs-regexp">/example.com/example</span>.html?page=<span class="hljs-number">1</span><br><br>history.pushState(&#123;<span class="hljs-symbol">page:</span> <span class="hljs-number">2</span>&#125;, <span class="hljs-string">&#x27;title 2&#x27;</span>, <span class="hljs-string">&#x27;?page=2&#x27;</span>);<br><span class="hljs-regexp">//</span> <span class="hljs-variable constant_">URL</span> 显示为 <span class="hljs-symbol">http:</span>/<span class="hljs-regexp">/example.com/example</span>.html?page=<span class="hljs-number">2</span><br><br>history.replaceState(&#123;<span class="hljs-symbol">page:</span> <span class="hljs-number">3</span>&#125;, <span class="hljs-string">&#x27;title 3&#x27;</span>, <span class="hljs-string">&#x27;?page=3&#x27;</span>);<br><span class="hljs-regexp">//</span> <span class="hljs-variable constant_">URL</span> 显示为 <span class="hljs-symbol">http:</span>/<span class="hljs-regexp">/example.com/example</span>.html?page=<span class="hljs-number">3</span><br><br>history.back()<br>/<span class="hljs-regexp">/ URL 显示为 http:/</span><span class="hljs-regexp">/example.com/example</span>.html?page=<span class="hljs-number">1</span><br><br>history.back()<br>/<span class="hljs-regexp">/ URL 显示为 http:/</span><span class="hljs-regexp">/example.com/example</span>.html<br><br>history.go(<span class="hljs-number">2</span>)<br>/<span class="hljs-regexp">/ URL 显示为 http:/</span><span class="hljs-regexp">/example.com/example</span>.html?page=<span class="hljs-number">3</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="popstate事件"><a href="#popstate事件" class="headerlink" title="popstate事件"></a>popstate事件</h4><blockquote>
+<p>popstate事件是window对象上的事件，配合pushState()和replaceState()方法使用。当同一个文档(可以理解为同一个网页，不能跳转，跳转了就不是同一个网页了)的浏览历史出现变化时，就会触发popstate事件。</p>
+</blockquote>
+<p>上面我们说过，调用pushState()或者replaceState()方法都会改变当前的历史记录，仅仅调用pushState()方法或replaceState()方法 ，并不会触发该事件，另外一个条件是用户必须点击浏览器的倒退按钮或者前进按钮，或者使用<a href="https://link.juejin.cn/?target=https://www.fly63.com/tag/js">js</a>调用history.back()或者history.forward()等方法。</p>
+<p>所以，记住popstate事件触发的条件</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs markdown"><span class="hljs-bullet">1.</span> 处在同一个文档(同一个html页面)<br><span class="hljs-bullet">2.</span> 文档的浏览历史(即history对象)发生改变<br></code></pre></td></tr></table></figure>
+
+<p>只要符合这两个条件，popstate事件就会触发</p>
+<p>具体例子</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs xml">//index.html<br><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript"></span><br><span class="language-javascript">        <span class="hljs-variable language_">window</span>.<span class="hljs-property">onpopstate</span>=<span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)&#123;</span><br><span class="language-javascript">            <span class="hljs-title function_">alert</span>(<span class="hljs-string">&#x27;location &#x27;</span>+<span class="hljs-variable language_">document</span>.<span class="hljs-property">location</span>+<span class="hljs-string">&#x27;,state &#x27;</span>+jsON.<span class="hljs-title function_">stringify</span>(event.<span class="hljs-property">state</span>))</span><br><span class="language-javascript">        &#125;</span><br><span class="language-javascript">    </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br>    <span class="hljs-comment">&lt;!--第二步 --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onclick</span>=<span class="hljs-string">&quot;window.history.back()&quot;</span>&gt;</span>后退<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onclick</span>=<span class="hljs-string">&quot;window.history.forward()&quot;</span>&gt;</span>前进<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span><br>    <span class="hljs-comment">&lt;!--第一步 --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onclick</span>=<span class="hljs-string">&quot;window.history.pushState(null,&#x27;&#x27;,&#x27;1.html&#x27;)&quot;</span>&gt;</span>pushState<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>    <br><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>先点击pushState按钮，在点击后退按钮，就会触发popstate事件</p>
+<p>再来一个例子</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs xml">//index.html<br><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript"></span><br><span class="language-javascript">        <span class="hljs-variable language_">window</span>.<span class="hljs-property">onpopstate</span>=<span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)&#123;</span><br><span class="language-javascript">            <span class="hljs-title function_">alert</span>(<span class="hljs-string">&#x27;location &#x27;</span>+<span class="hljs-variable language_">document</span>.<span class="hljs-property">location</span>+<span class="hljs-string">&#x27;,state &#x27;</span>+<span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(event.<span class="hljs-property">state</span>))</span><br><span class="language-javascript">        &#125;</span><br><span class="language-javascript">    </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#one&quot;</span>&gt;</span>#one<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>   <br><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>直接点击a标签,也可以触发popstate事件</p>
+<blockquote>
+<p>OK,我来总结一下，老版<code>hashRouter</code>只拥有<code>hashChange</code>这一个监听，而在<code>history</code>中，把这个监听拆成了两部分：</p>
+<ul>
+<li><code>(push | replace)State</code>:负责切换路由，但不重新渲染</li>
+<li><code>popState</code>: 触发事件</li>
+</ul>
+<p>所以我们要干的，就是让我们<code>pushState</code>的时候，触发<code>popState</code>或者<code>hashChange</code>,调用我们自己的函数: 把子页面拉过来，也就是重写这几个函数，他有个响亮的名字： <strong>路由劫持</strong></p>
+</blockquote>
+<p>那既然要重写listener，那肯定就都得自己维护一个队列咯，大概就长这样：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// /route/index.ts</span><br><span class="hljs-keyword">const</span> listenedRouterChange : <span class="hljs-title class_">Record</span>&lt;listenedType, <span class="hljs-title class_">Function</span>[]&gt; = &#123;<br>    <span class="hljs-attr">hashchange</span>: [],<br>    <span class="hljs-attr">popstate</span>:[]<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>那每次<code>pushState</code>或者<code>replaceState</code>就得触发<code>popState</code>，就要监听<code>popState</code>往这加东西咯，</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// /route/index.ts</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title function_">Route</span> = (<span class="hljs-params"></span>) =&gt; &#123;<br>    <span class="hljs-variable language_">window</span>.<span class="hljs-property">history</span>.<span class="hljs-property">pushState</span> = <span class="hljs-function">(<span class="hljs-params">...args</span>) =&gt;</span> &#123;<br>        originalPush.<span class="hljs-title function_">apply</span>(<span class="hljs-variable language_">window</span>.<span class="hljs-property">history</span>, args)<br>        historyEvent = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PopStateEvent</span>(<span class="hljs-string">&#x27;popstate&#x27;</span>)<br>        args[<span class="hljs-number">2</span>] &amp;&amp; <span class="hljs-title function_">reroute</span>(args[<span class="hljs-number">2</span>] <span class="hljs-keyword">as</span> <span class="hljs-built_in">string</span>) <span class="hljs-comment">// args[2]就是传入的url</span><br>    &#125;<br>    <span class="hljs-variable language_">window</span>.<span class="hljs-property">history</span>.<span class="hljs-property">replaceState</span> = <span class="hljs-function">(<span class="hljs-params">...args</span>) =&gt;</span> &#123;<br>        originalReplace.<span class="hljs-title function_">apply</span>(<span class="hljs-variable language_">window</span>.<span class="hljs-property">history</span>, args)<br>        historyEvent = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PopStateEvent</span>(<span class="hljs-string">&#x27;popstate&#x27;</span>)<br>        args[<span class="hljs-number">2</span>] &amp;&amp; <span class="hljs-title function_">reroute</span>(args[<span class="hljs-number">2</span>] <span class="hljs-keyword">as</span> <span class="hljs-built_in">string</span>)<br>    &#125;<br><br>    <span class="hljs-variable language_">window</span>.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&quot;hashchange&quot;</span>, handleUrlChange)<br>    <span class="hljs-variable language_">window</span>.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&quot;popstate&quot;</span>, handleUrlChange)<br><br>    <span class="hljs-variable language_">window</span>.<span class="hljs-property">addEventListener</span> = <span class="hljs-title class_">EventListener</span>(<span class="hljs-variable language_">window</span>.<span class="hljs-property">addEventListener</span>)<br>    <span class="hljs-variable language_">window</span>.<span class="hljs-property">removeEventListener</span> = <span class="hljs-title class_">EventListener</span>(<span class="hljs-variable language_">window</span>.<span class="hljs-property">removeEventListener</span>)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>因为要重新监听<code>hashChange</code>和<code>popState</code>，我们重新定义<code>EventListener</code>,让这俩事件触发时，往<code>listendRouterChange</code>里加点料</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// /route/index.ts</span><br><span class="hljs-keyword">const</span> <span class="hljs-title function_">hasListener</span> = (<span class="hljs-params">name: listenedType, fn: <span class="hljs-built_in">Function</span></span>) =&gt; &#123;<br>    <span class="hljs-keyword">return</span> listenedRouterChange[name].<span class="hljs-title function_">filter</span>(<span class="hljs-function">(<span class="hljs-params">item</span>) =&gt;</span> item === fn).<span class="hljs-property">length</span><br>&#125;<br><span class="hljs-keyword">const</span> <span class="hljs-title class_">EventListener</span> = (<span class="hljs-attr">fn</span>: <span class="hljs-title class_">Function</span>): <span class="hljs-function"><span class="hljs-params">any</span> =&gt;</span> &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">function</span> (<span class="hljs-params">name: <span class="hljs-built_in">string</span>, func: <span class="hljs-built_in">Function</span></span>) &#123;<br>        <span class="hljs-keyword">if</span>(name === <span class="hljs-string">&quot;popstate&quot;</span> || name === <span class="hljs-string">&quot;hashchange&quot;</span>) &#123;<br>            <span class="hljs-keyword">if</span>(!<span class="hljs-title function_">hasListener</span>(name, func)) &#123;<br>                listenedRouterChange[name <span class="hljs-keyword">as</span> listenedType].<span class="hljs-title function_">push</span>(func)<br>                <span class="hljs-keyword">return</span>;<br>            &#125; <br><br>        &#125;<br>        <span class="hljs-keyword">return</span> fn.<span class="hljs-title function_">apply</span>(<span class="hljs-variable language_">window</span>, <span class="hljs-variable language_">arguments</span>)<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>然后，<code>pushState</code>的时候要挂载页面，可以看到，这里用的是<code>reroute</code>这个函数，记得之前的页面挂载函数吗,实现一下咯</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// /route/index.ts</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title function_">reroute</span> = (<span class="hljs-params">url: <span class="hljs-built_in">string</span></span>) =&gt; &#123;<br>    <span class="hljs-keyword">if</span> (url !== lastUrl) &#123;<br>        <span class="hljs-keyword">const</span> &#123; actives, unmounts &#125; = <span class="hljs-title function_">getAppListStatus</span>()<br>        <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">all</span>(<br>            unmounts<br>                .<span class="hljs-title function_">map</span>(<span class="hljs-keyword">async</span> (<span class="hljs-attr">app</span>: <span class="hljs-title class_">ChildAppInfo</span>) =&gt; &#123;<br>                    <span class="hljs-keyword">await</span> <span class="hljs-title function_">runUnmounted</span>(app)<br>                &#125;)<br>                .<span class="hljs-title function_">concat</span>(<br>                    actives.<span class="hljs-title function_">map</span>(<span class="hljs-keyword">async</span> (<span class="hljs-attr">app</span>: <span class="hljs-title class_">ChildAppInfo</span>) =&gt; &#123;<br>                        <span class="hljs-keyword">await</span> <span class="hljs-title function_">runBeforeLoad</span>(app)<br>                        <span class="hljs-keyword">await</span> <span class="hljs-title function_">runBoostrap</span>(app)<br>                        <span class="hljs-keyword">await</span> <span class="hljs-title function_">runMounted</span>(app)<br>                    &#125;)<br>                )<br>        ).<span class="hljs-title function_">then</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>            <span class="hljs-title function_">callCapturedListeners</span>() <span class="hljs-comment">//挂上之后执行回调</span><br>        &#125;)<br>    &#125;<br>    lastUrl = url || location.<span class="hljs-property">href</span><br>&#125;<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">callCapturedListeners</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">if</span> (historyEvent) &#123;<br>        <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">keys</span>(listenedRouterChange).<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">eventName</span>) =&gt;</span> &#123;<br>            <span class="hljs-keyword">const</span> listeners = listenedRouterChange[eventName <span class="hljs-keyword">as</span> listenedType]<br>            <span class="hljs-keyword">if</span> (listeners.<span class="hljs-property">length</span>) &#123;<br>                listeners.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">listener</span>) =&gt;</span> &#123;<br>                    listener.<span class="hljs-title function_">call</span>(<span class="hljs-variable language_">this</span>, historyEvent)<br>                &#125;)<br>            &#125;<br>        &#125;)<br>        historyEvent = <span class="hljs-literal">null</span><br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="最后，来看看文件加载吧，快结束咯😏"><a href="#最后，来看看文件加载吧，快结束咯😏" class="headerlink" title="最后，来看看文件加载吧，快结束咯😏"></a>最后，来看看文件加载吧，快结束咯😏</h3><p><strong>首先的首先，就是跨域问题</strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// vite.config.ts</span><br><span class="hljs-keyword">import</span> &#123; defineConfig &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vite&#x27;</span><br><span class="hljs-keyword">import</span> react <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@vitejs/plugin-react&#x27;</span><br><br><span class="hljs-comment">// https://vitejs.dev/config/</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">defineConfig</span>(&#123;<br>  <span class="hljs-attr">plugins</span>: [<span class="hljs-title function_">react</span>()],<br>  <span class="hljs-attr">server</span>: &#123;<br>    <span class="hljs-attr">proxy</span>: &#123;<br>      <span class="hljs-string">&quot;/api&quot;</span>: &#123;<br>        <span class="hljs-attr">target</span>: <span class="hljs-string">&quot;http://localhost:10086&quot;</span>,<br>        <span class="hljs-attr">changeOrigin</span>: <span class="hljs-literal">true</span>,<br>        <span class="hljs-attr">rewrite</span>: <span class="hljs-function">(<span class="hljs-params">path</span>) =&gt;</span> path.<span class="hljs-title function_">replace</span>(<span class="hljs-regexp">/^\/api/</span>, <span class="hljs-string">&quot;&quot;</span>),<br>      &#125;,<br>    &#125;,<br>  &#125;,<br>&#125;)<br><br></code></pre></td></tr></table></figure>
+
+<p><strong>之后又要动脑咯，资源怎么加载嘞？</strong></p>
+<p>首先，咱们上边提到的的<code>html</code>文件中肯定有引入的文件需要加载，可能是图片，也可能是<code>css</code>、 <code>js</code>,这里就要做一个判断：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// src/loader/parse.ts</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title function_">parseHTML</span> = (<span class="hljs-params">parent: HTMLElement, app: IInternalAppInfo</span>) =&gt; &#123;<br>  <span class="hljs-keyword">const</span> children = <span class="hljs-title class_">Array</span>.<span class="hljs-title function_">from</span>(parent.<span class="hljs-property">children</span>) <span class="hljs-keyword">as</span> <span class="hljs-title class_">HTMLElement</span>[]<br>  children.<span class="hljs-property">length</span> &amp;&amp; children.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">item</span>) =&gt;</span> <span class="hljs-title function_">parseHTML</span>(item, app))<br><br>  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> dom <span class="hljs-keyword">of</span> children) &#123;<br>    <span class="hljs-keyword">if</span> (<span class="hljs-regexp">/^(link)$/i</span>.<span class="hljs-title function_">test</span>(dom.<span class="hljs-property">tagName</span>)) &#123;<br>      <span class="hljs-comment">// 处理 link</span><br>    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-regexp">/^(script)$/i</span>.<span class="hljs-title function_">test</span>(dom.<span class="hljs-property">tagName</span>)) &#123;<br>      <span class="hljs-comment">// 处理 script</span><br>    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-regexp">/^(img)$/i</span>.<span class="hljs-title function_">test</span>(dom.<span class="hljs-property">tagName</span>) &amp;&amp; dom.<span class="hljs-title function_">hasAttribute</span>(<span class="hljs-string">&#x27;src&#x27;</span>)) &#123;<br>      <span class="hljs-comment">// 处理图片，毕竟图片资源用相对路径肯定也 404 了</span><br>      dom.<span class="hljs-title function_">setAttribute</span>(<br>        <span class="hljs-string">&#x27;src&#x27;</span>,<br>        <span class="hljs-title function_">getCompletionURL</span>(dom.<span class="hljs-title function_">getAttribute</span>(<span class="hljs-string">&#x27;src&#x27;</span>)!, app.<span class="hljs-property">entry</span>)!<br>      )<br>    &#125;<br>  &#125;<br><br>  <span class="hljs-keyword">return</span> &#123;  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li><p>对于<code>link</code>文件，它可能是外部引入，也可能是本地引用</p>
+<ul>
+<li><p>对于本地引用：要把相对路径转为绝对路径</p>
+</li>
+<li><p>对于外部引入：不变</p>
+<p>就这样⬇️</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">const</span> <span class="hljs-title function_">parseLink</span> = (<span class="hljs-params"></span><br><span class="hljs-params">    link: HTMLElement,</span><br><span class="hljs-params">    parent: HTMLElement,</span><br><span class="hljs-params">    app: ChildAppInfo</span><br><span class="hljs-params"></span>) =&gt; &#123;<br>    <span class="hljs-keyword">const</span> rel = link.<span class="hljs-title function_">getAttribute</span>(<span class="hljs-string">&#x27;rel&#x27;</span>)<br>    <span class="hljs-keyword">const</span> href = link.<span class="hljs-title function_">getAttribute</span>(<span class="hljs-string">&#x27;href&#x27;</span>)<br>    <span class="hljs-keyword">if</span> (rel === <span class="hljs-string">&#x27;stylesheet&#x27;</span> &amp;&amp; href) &#123;<br>        parent.<span class="hljs-title function_">appendChild</span>(link)<br>        <span class="hljs-keyword">return</span> <span class="hljs-title function_">getCompletionURL</span>(href, app.<span class="hljs-property">entry</span>)<br>    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (href) &#123;<br>        link.<span class="hljs-title function_">setAttribute</span>(<span class="hljs-string">&#x27;href&#x27;</span>, <span class="hljs-title function_">getCompletionURL</span>(href, app.<span class="hljs-property">entry</span>)!)<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// /utils/concatUrl.ts</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">getCompletionURL</span>(<span class="hljs-params">src: <span class="hljs-built_in">string</span> | <span class="hljs-literal">null</span>, baseURI: <span class="hljs-built_in">string</span></span>) &#123;<br>    <span class="hljs-keyword">if</span> (!src) <span class="hljs-keyword">return</span> src<br>    <span class="hljs-comment">// 如果 URL 已经是协议开头就直接返回</span><br>    <span class="hljs-keyword">if</span> (<span class="hljs-regexp">/^(https|http)/</span>.<span class="hljs-title function_">test</span>(src)) <span class="hljs-keyword">return</span> src<br>    <span class="hljs-comment">// 通过原生方法拼接 URL</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title function_">URL</span>(src, <span class="hljs-title function_">getCompletionBaseURL</span>(baseURI)).<span class="hljs-title function_">toString</span>()<br>&#125;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">getCompletionBaseURL</span>(<span class="hljs-params">url: <span class="hljs-built_in">string</span></span>) &#123;<br>    <span class="hljs-keyword">return</span> url.<span class="hljs-title function_">startsWith</span>(<span class="hljs-string">&#x27;//&#x27;</span>) ? <span class="hljs-string">`<span class="hljs-subst">$&#123;location.protocol&#125;</span><span class="hljs-subst">$&#123;url&#125;</span>`</span> : url<br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>对于<code>script</code>文件，也有两种情况，外部引入的话还要额外<code>fetch</code>一次，这里用<code>url</code>表示外联，<code>text</code>如果有那就是内联</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">const</span> <span class="hljs-title function_">parseScript</span> = (<span class="hljs-params"></span><br><span class="hljs-params">    script: HTMLElement,</span><br><span class="hljs-params">    parent: HTMLElement,</span><br><span class="hljs-params">    app: ChildAppInfo</span><br><span class="hljs-params"></span>) =&gt; &#123;<br>    <span class="hljs-keyword">const</span> src = script.<span class="hljs-title function_">getAttribute</span>(<span class="hljs-string">&#x27;src&#x27;</span>)<br>    parent.<span class="hljs-title function_">appendChild</span>(script)<br>    <span class="hljs-keyword">return</span> &#123; <span class="hljs-attr">url</span>: <span class="hljs-title function_">getCompletionURL</span>(src, app.<span class="hljs-property">entry</span>), <span class="hljs-attr">text</span>: script.<span class="hljs-property">innerHTML</span> &#125;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<p>合并起来就是这样咯：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">const</span> <span class="hljs-attr">scripts</span>: <span class="hljs-built_in">string</span>[] = []<br><span class="hljs-keyword">const</span> <span class="hljs-attr">links</span>: <span class="hljs-built_in">string</span>[] = []<br><span class="hljs-keyword">const</span> <span class="hljs-attr">inlineScript</span>: <span class="hljs-built_in">string</span>[] = []<br><br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title function_">parseHTML</span> = (<span class="hljs-params">parent: HTMLElement, app: ChildAppInfo</span>) =&gt; &#123;<br>    <span class="hljs-keyword">const</span> children = <span class="hljs-title class_">Array</span>.<span class="hljs-title function_">from</span>(parent.<span class="hljs-property">children</span>) <span class="hljs-keyword">as</span> <span class="hljs-title class_">HTMLElement</span>[]<br>    children.<span class="hljs-property">length</span> &amp;&amp; children.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">item</span>) =&gt;</span> <span class="hljs-title function_">parseHTML</span>(item, app))<br><br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> dom <span class="hljs-keyword">of</span> children) &#123;<br>        <span class="hljs-keyword">if</span> (<span class="hljs-regexp">/^(link)$/i</span>.<span class="hljs-title function_">test</span>(dom.<span class="hljs-property">tagName</span>)) &#123;<br>            <span class="hljs-keyword">const</span> data = <span class="hljs-title function_">parseLink</span>(dom, parent, app)<br>            data &amp;&amp; links.<span class="hljs-title function_">push</span>(data)<br>        &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-regexp">/^(script)$/i</span>.<span class="hljs-title function_">test</span>(dom.<span class="hljs-property">tagName</span>)) &#123;<br>            <span class="hljs-keyword">const</span> data = <span class="hljs-title function_">parseScript</span>(dom, parent, app)<br>            data.<span class="hljs-property">text</span> &amp;&amp; inlineScript.<span class="hljs-title function_">push</span>(data.<span class="hljs-property">text</span>)<br>            data.<span class="hljs-property">url</span> &amp;&amp; scripts.<span class="hljs-title function_">push</span>(data.<span class="hljs-property">url</span>)<br>        &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-regexp">/^(img)$/i</span>.<span class="hljs-title function_">test</span>(dom.<span class="hljs-property">tagName</span>) &amp;&amp; dom.<span class="hljs-title function_">hasAttribute</span>(<span class="hljs-string">&#x27;src&#x27;</span>)) &#123;<br>            dom.<span class="hljs-title function_">setAttribute</span>(<br>                <span class="hljs-string">&#x27;src&#x27;</span>,<br>                <span class="hljs-title function_">getCompletionURL</span>(dom.<span class="hljs-title function_">getAttribute</span>(<span class="hljs-string">&#x27;src&#x27;</span>)!, app.<span class="hljs-property">entry</span>)!<br>            )<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-keyword">return</span> &#123; scripts, links, inlineScript &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>但是，前端就是轮子多，这些其实都不用自己写的，有个<a target="_blank" rel="noopener" href="https://www.npmjs.com/package/import-html-entry">import-html-entry</a>库可以直接用，嘎嘎爽</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">const</span> &#123; template, getExternalScripts, getExternalStyleSheets &#125; =<br>   <span class="hljs-keyword">await</span> importEntry(entry)<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="文件加载完，就要运行js咯，这回是真快了！😝"><a href="#文件加载完，就要运行js咯，这回是真快了！😝" class="headerlink" title="文件加载完，就要运行js咯，这回是真快了！😝"></a>文件加载完，就要运行js咯，这回是真快了！😝</h3><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// /loader/index.ts</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title function_">loadHTML</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params">app: ChildAppInfo</span>) =&gt; &#123;<br>    <span class="hljs-keyword">const</span> &#123; container, entry &#125; = app<br>    <span class="hljs-keyword">const</span> &#123; template, getExternalScripts, getExternalStyleSheets &#125; =<br>        <span class="hljs-keyword">await</span> importEntry(entry)<br>    <span class="hljs-keyword">const</span> dom = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelector</span>(container)<br><br>    <span class="hljs-keyword">if</span> (!dom) &#123;<br>        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&#x27;容器不存在&#x27;</span>)<br>    &#125;<br><br>    dom.<span class="hljs-property">innerHTML</span> = template<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(dom.<span class="hljs-property">innerHTML</span>)<br>    <span class="hljs-keyword">await</span> <span class="hljs-title function_">getExternalStyleSheets</span>()<br>    <span class="hljs-keyword">const</span> jsCode = <span class="hljs-keyword">await</span> <span class="hljs-title function_">getExternalScripts</span>()<br><br>    jsCode.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">script</span>) =&gt;</span> &#123;<br>        <span class="hljs-keyword">const</span> lifeCycle = <span class="hljs-title function_">runJS</span>(script, app)<br>        <span class="hljs-keyword">if</span> (lifeCycle) &#123;<br>            app.<span class="hljs-property">bootstrap</span> = lifeCycle.<span class="hljs-property">bootstrap</span><br>            app.<span class="hljs-property">mount</span> = lifeCycle.<span class="hljs-property">mount</span><br>            app.<span class="hljs-property">unmount</span> = lifeCycle.<span class="hljs-property">unmount</span><br>        &#125;<br>    &#125;)<br><br>    <span class="hljs-keyword">return</span> app<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>本来打算这么跑的，但是没跑成，晚上回去看看咋个事，反正就是把js拿出来执行，就这个意思</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%89%8D%E7%AB%AF/" class="category-chain-item">前端</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%89%8D%E7%AB%AF/js%E8%BF%9B%E9%98%B6/" class="category-chain-item">js进阶</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%89%8D%E7%AB%AF/" class="print-no-link">#前端</a>
+      
+        <a href="/tags/js%E8%BF%9B%E9%98%B6/" class="print-no-link">#js进阶</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>微前端</div>
+      <div>http://baidu.com/2024/03/03/micro/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>KB</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年3月3日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/03/06/refactor/" title="重构的艺术">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">重构的艺术</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/02/04/redux/" title="redux">
+                        <span class="hidden-mobile">redux</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'konodioda727/konodioda727');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

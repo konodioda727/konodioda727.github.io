@@ -1,0 +1,833 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="KB">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="最用心的一篇，最啰嗦的一篇，也是我觉得写得最好的一篇🐤">
+<meta property="og:type" content="article">
+<meta property="og:title" content="原型链">
+<meta property="og:url" content="http://baidu.com/2023/11/17/proto/index.html">
+<meta property="og:site_name" content="Kai&#39;s Blog">
+<meta property="og:description" content="最用心的一篇，最啰嗦的一篇，也是我觉得写得最好的一篇🐤">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2023/11/17/ea1UdBXujoN7Dpz.png">
+<meta property="article:published_time" content="2023-11-16T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-11-17T10:30:02.000Z">
+<meta property="article:author" content="KB">
+<meta property="article:tag" content="前端">
+<meta property="article:tag" content="js进阶">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://s2.loli.net/2023/11/17/ea1UdBXujoN7Dpz.png">
+  
+  
+  
+  <title>原型链 - Kai&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"baidu.com","root":"/","version":"1.9.5","typing":{"enable":true,"typeSpeed":60,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', '');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Kaiqing Liu</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://s2.loli.net/2023/11/17/Dm5YvhQfst1NUWO.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="原型链"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-11-17 00:00" pubdate>
+          2023年11月17日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          35 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">原型链</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="原型链🤔"><a href="#原型链🤔" class="headerlink" title="原型链🤔"></a>原型链🤔</h1><h2 id="1-原型链的形成"><a href="#1-原型链的形成" class="headerlink" title="1. 原型链的形成"></a>1. 原型链的形成</h2><p><code>原型链</code> 是 <code>js</code> 实现继承的重要方式，也是 <code>js</code> 与其他语言与众不同的地方之一， <code>js</code> 中，原型链的形成方式如下：</p>
+<blockquote>
+<ol>
+<li><code>js</code>中每个函数都有一个 <code>原型对象</code>, 这个对象只能在 <code>new</code> 构造时才能使用，当作为普通函数时，访问这个对象将会得到 <code>undefined</code>🪨</li>
+<li>每个原型对象中包含着 <code>指向上一个原型对象的指针</code>, 当自身对象没有这个属性时， 会根据这个指针寻找上一层对象的相应属性 ，于是就形成了 <code>链式结构</code></li>
+</ol>
+</blockquote>
+<h2 id="2-原型对象的组成🤐"><a href="#2-原型对象的组成🤐" class="headerlink" title="2. 原型对象的组成🤐"></a>2. 原型对象的组成🤐</h2><p>可能看完上面的解释大家还有些迷糊，没关系，在这一小节，我会跟大家详细介绍 <code>原型对象</code> 这个玩意。</p>
+<p>初始的<code>原型对象</code>中有三种属性： </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-title class_">GGBond</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span> = &#123;<br>    <span class="hljs-attr">__proto__</span>: <span class="hljs-title class_">Object</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>,<br>    <span class="hljs-attr">constructor</span>: <span class="hljs-title class_">GGBond</span>,<br>    <span class="hljs-attr">super_bang_bang_tang</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;超级棒棒糖&quot;</span>);<br>    &#125;<br>    <span class="hljs-attr">fei_fei_gong_zhu</span>: <span class="hljs-string">&#x27;wife&#x27;</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li><p>一种叫做 <code>__proto__</code>， 这个就是刚刚所说指向上级的指针，当自身的<code>prototype</code>找不到相应属性时，就要顺着这个指针寻找上一级里的属性🤣</p>
+<blockquote>
+<p><code>__proto__</code>是个很有意思的变量，如果你尝试打印它:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title class_">GGBond</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">__proto__</span>);<br></code></pre></td></tr></table></figure>
+
+<p>你将会得到 <code>&#123;&#125;</code>，但它实际上并不为空对象，如果你尝试以下比较：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title class_">GGBond</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">__proto__</span> === <span class="hljs-title class_">Object</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>);<br></code></pre></td></tr></table></figure>
+
+<p>那你会惊奇的发现它会返回 <code>true</code>😍, 这是因为<code>__proto__</code>是一个内部属性，所以某些时候会被限制显示。</p>
+<p>因此，在 <code>ES6</code>中，更推荐使用新增的 <code>Object.getPrototypeOf</code>和<code>Object.getPrototypeOf</code>方法而不是直接访问<code>__proto__</code></p>
+<p>有意思的是，<code>__proto__</code> 这个属性本来就不是 <code>ES </code>的规范，直到 <code>ES6 </code>才被正式引入，但是官方在 <code>ES6</code> 又给出了它的替代方案（实际上就是封装了一小下😡），属于是生不逢时了</p>
+</blockquote>
+</li>
+<li><p>一种叫做<code>constructor</code>，它指向自身，主要是用来判别是否为某个构造函数的实例，但是个人感觉它的功能快被某个<code>Symbol</code>替代了，还记得是哪个吗😏，不记得了记得去看看我之前的文章。</p>
+<blockquote>
+<p>个人感觉网上所说的它是<code>维护原型链的方法</code>不是很贴切😵，他们所说的<code>维护原型链</code>,也就是让继承更规范，类型识别更加方便。实际上<code>constructor</code>根本不会影响继承，也不会影响原型链上下的东西，感觉叫做<code>类型标识</code>也比<code>维护原型链</code>更好一些🤐</p>
+</blockquote>
+</li>
+<li><p>最后就是咱们挂载到原型对象上的属性和方法了，在上面， 就是<code>super_bang_bang_tang</code>和<code>fei_fei_gong_zhu</code></p>
+<blockquote>
+<p><strong>注意：</strong></p>
+<p>有些属性并不会被挂载到原型链上，也就是说，原型链上不会有所有的属性。🐶具体哪些不能在之后会有介绍</p>
+</blockquote>
+</li>
+</ul>
+<p>有没有感觉这个过程很像咱们亲爱的 <code>闭包</code> 😏</p>
+<h2 id="3-原型对象最后去哪了？"><a href="#3-原型对象最后去哪了？" class="headerlink" title="3. 原型对象最后去哪了？"></a>3. 原型对象最后去哪了？</h2><p>由上面，咱们可以知道，<code>原型对象</code>是函数上才有的对象，那么如果咱们构造一个对象，那构造函数的<code>原型对象</code>会去哪里呢？🤔</p>
+<p>还是以 <code>GGBond</code> 为例：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> dead_pig = <span class="hljs-keyword">new</span> <span class="hljs-title class_">GGBond</span>();<br><span class="hljs-keyword">for</span>(<span class="hljs-keyword">let</span> key <span class="hljs-keyword">in</span> dead_pig) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(key);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>假设所有属性都是<code>可枚举</code>的，那么上面的输出会变成:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">&gt; </span><span class="language-bash">constructor</span><br>super_bang_bang_tang<br>fei_fei_gong_zhu<br></code></pre></td></tr></table></figure>
+
+<p><code>__proto__</code>为什么不在，看看上边，写了好长一段嘞😵</p>
+<p>由此可见，<code>原型对象</code>在构建成对象之后，会自动散开<code>constructor</code>和<code>__proto__</code>，变成对象的两个属性，而其他则被舍弃，这时候，如果你要访问某个当前对象没有的属性，那么他就会顺着<code>__proto__</code>上溯去找咯</p>
+<blockquote>
+<p><strong>注意：</strong></p>
+<p>这里有 <code>fei_fei_gong_zhu</code>和<code>super_bang_bang_tang</code>是因为并没有把他们挂载到原型链上，而是挂载到实例上，原型链上的属性并不会被散开到对象中</p>
+</blockquote>
+<h2 id="4-你已经学会原型链了，来试试写出ES6的class吧😎"><a href="#4-你已经学会原型链了，来试试写出ES6的class吧😎" class="headerlink" title="4.你已经学会原型链了，来试试写出ES6的class吧😎"></a>4.你已经学会原型链了，来试试写出ES6的class吧😎</h2><p><code>ES6</code>的<code>class</code>其实就是一个语法糖，是对原型链操作的简单封装，接下来，让我们简单实现以下 <code>class</code> 中 <code>extends</code> 操作吧：</p>
+<p>还是以<code>GGBond</code>为例，先简单定义一个<code>DeadPig</code>构造函数和一个<code>GGBond</code>构造函数：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">DeadPig</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">category</span> = <span class="hljs-string">&quot;pig&quot;</span><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">food</span> = <span class="hljs-string">&quot;vegetable&quot;</span><br>&#125;<br><span class="hljs-keyword">function</span> <span class="hljs-title function_">GGBond</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">name</span> = <span class="hljs-string">&quot;GGBond&quot;</span><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">food</span> = <span class="hljs-string">&quot;超级棒棒糖&quot;</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>接下来，要让<code>GGBond</code>构造函数继承<code>DeadPig</code>函数，该怎么办呢😏</p>
+<hr>
+<p>那肯定是要修改<code>GGBond</code>的<code>prototype</code>为<code>DeadPig</code>对不对，开干！</p>
+<p>且慢，咱们要想实现继承，首先要解决两个问题：</p>
+<ul>
+<li>子类要有父类定义的共用属性</li>
+<li>子类的改动不影响父类</li>
+</ul>
+<p>要想实现这两点，就肯定不能用父类的直接引用，而要用间接引用，而什么是间接引用呢？<code>构造出来的实例</code>就是一个不错的选择，这样主要有两个好处：</p>
+<ul>
+<li>子类不会影响父类</li>
+<li>子类实例上的某些方法也会被带进来，范围更广</li>
+</ul>
+<p>于是就有了下面的操作:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-title class_">GGBond</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">DeadPig</span>();<br></code></pre></td></tr></table></figure>
+
+<p>让我们来看看这个操作究竟都做了什么：</p>
+<p>首先是创建了一个<code>DeadPig</code>对象，大概张这样： </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs javascript">&#123;<br>    <span class="hljs-attr">__proto__</span>: <span class="hljs-title class_">Object</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>,<br>    <span class="hljs-attr">constructor</span>: <span class="hljs-title class_">DeadPig</span>,<br>    <span class="hljs-attr">category</span>: <span class="hljs-string">&quot;pig&quot;</span>,<br>    <span class="hljs-attr">food</span>: <span class="hljs-string">&quot;vegetable&quot;</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>之后把这个对象赋值给 <code>GGBond.prototype</code>,这时<code>GGBond</code>大概长这样：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs javascript">&#123;<br>    <span class="hljs-attr">prototype</span>: &#123;<br>        <span class="hljs-attr">__proto__</span>: <span class="hljs-title class_">Object</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>,<br>        <span class="hljs-attr">constructor</span>: <span class="hljs-title class_">DeadPig</span>,<br>        <span class="hljs-attr">category</span>: <span class="hljs-string">&quot;pig&quot;</span>,<br>        <span class="hljs-attr">food</span>: <span class="hljs-string">&quot;vegetable&quot;</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这个时候就已经基本完成继承了，但是还有个小问题，就是<code>GGBond</code>的<code>constructor</code>还是<code>DeadPig</code>，这很让人恼火.😡</p>
+<p>如果别人访问<code>GGBond</code>实例的<code>constructor</code>，就会得到<code>DeadPig</code>,这还不是最烦人的，更重要的是**如果<code>GGBond</code>也被继承，那么它的子类的<code>constructor</code>**也会是<code>DeadPig</code>，来看例子：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">//如果GGBond也有实例，那应该长这样</span><br>&#123;<br>    <span class="hljs-attr">__proto__</span>: <span class="hljs-title class_">Object</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>,<br>    <span class="hljs-attr">constructor</span>: <span class="hljs-title class_">DeadPig</span>,<br>    <span class="hljs-attr">food</span>: <span class="hljs-string">&quot;超级棒棒糖&quot;</span>, <br>    <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;GGBond&quot;</span>,<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>如果它再被继承，那么被继承的构造函数应该长这样：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs javascript">&#123;<br>    <span class="hljs-attr">prototype</span>: &#123;<br>        <span class="hljs-attr">__proto__</span>: <span class="hljs-title class_">Object</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>,<br>        <span class="hljs-attr">constructor</span>: <span class="hljs-title class_">DeadPig</span>,<br>        <span class="hljs-attr">food</span>: <span class="hljs-string">&quot;超级棒棒糖&quot;</span>, <br>        <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;GGBond&quot;</span>,<br>    &#125;<br>    <span class="hljs-comment">// ...其他乱七八糟的属性</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>那它的<code>constructor</code>自然而然的也是<code>DeadPig</code></p>
+<p>那么如何修改<code>constructor</code>呢？很简单，暴力修改就行了😡</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-title class_">Object</span>.<span class="hljs-title function_">defineProperty</span>(<span class="hljs-title class_">GGBond</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>, <span class="hljs-string">&quot;constructor&quot;</span>, &#123;<br>    <span class="hljs-attr">enumberable</span>: <span class="hljs-literal">false</span>,<br>    <span class="hljs-attr">value</span>: <span class="hljs-title class_">GGBond</span><br>&#125;)<br></code></pre></td></tr></table></figure>
+
+
+
+<p>这下就圆满咯🤣但还有一些小细节要搞</p>
+<h2 id="5-深入理解构造函数和Class"><a href="#5-深入理解构造函数和Class" class="headerlink" title="5.深入理解构造函数和Class"></a>5.深入理解构造函数和Class</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">GGBond</span>(<span class="hljs-params"></span>) &#123;<br>	<span class="hljs-variable language_">this</span>.<span class="hljs-property">name</span> = <span class="hljs-string">&quot;ggb&quot;</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这里的 <code>name</code> 属性是挂载到 <code>实例</code> 上的，而非原型链。因此上面的示例中：</p>
+<p><img src="https://s2.loli.net/2023/11/17/kjg4xGHlWOPoybh.png" srcset="/img/loading.gif" lazyload alt="image1"></p>
+<p>可以看到<code>GGBond.prototype</code>内并没有自身的属性,如果想让属性存到原型链中，可以使用： <code>Object.defineProperty(GGBond.prototype, &#39;name&#39;, &#123;value: value&#125;)</code> 或者 <code>GGBond.prototype[name] = value </code>来实现</p>
+<hr>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">GGBond</span> &#123;<br>    <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;&#125;,<br>    <span class="hljs-attr">name</span>: <span class="hljs-number">1</span>,<br>    <span class="hljs-attr">value</span>: <span class="hljs-number">2</span>,<br>    <span class="hljs-title function_">getValue</span>(<span class="hljs-params"></span>) &#123;<br>        <br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>但是</strong>如果到了<code>Class</code>中, <code>name</code>这种属性还是挂载到示例上，而<code>getValue</code>这种方法，则会<strong>直接挂载到原型链上</strong></p>
+<hr>
+<p>还有一件很有意思的事情：</p>
+<p>如果你修改<code>prototype</code>的一部分，并没有完全修改的话，那么在修改之前创建的实例会<code>随之一起变动</code></p>
+<p>但如果完全修改，那么在<strong>修改之前创建的实例会像<code>闭包</code>一样不受影响</strong></p>
+<p>例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> ggb = <span class="hljs-keyword">new</span> <span class="hljs-title class_">GGBond</span>();<br><span class="hljs-title class_">GGBond</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">status</span> = <span class="hljs-string">&quot;dead&quot;</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(ggb.<span class="hljs-property">status</span>)<br><span class="hljs-comment">// &gt; dead</span><br><br><span class="hljs-title class_">GGBond</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span> = &#123;<br>    <span class="hljs-attr">status</span>: <span class="hljs-string">&quot;alive&quot;</span><br>&#125;<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(ggb.<span class="hljs-property">status</span>)<br><span class="hljs-comment">// &gt; dead</span><br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>出现这种情况是因为当修改一部分属性的时候，构造函数的<code>原型引用</code>仍未改变，只是修改了引用上的几个方法或属性，而<code>js</code>又是动态查找，所以会同步到所有构造出的对象。而一旦修改了整个<code>prrototype</code>，则会导致构造函数的<code>原型引用</code>整个更改，而<strong>之前构造的对象仍保持之前的引用</strong>，因此不会改变</p>
+</blockquote>
+<p>怎么样，是不是和<code>闭包</code>极其的相似😏</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%89%8D%E7%AB%AF/" class="category-chain-item">前端</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%89%8D%E7%AB%AF/js%E8%BF%9B%E9%98%B6/" class="category-chain-item">js进阶</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%89%8D%E7%AB%AF/" class="print-no-link">#前端</a>
+      
+        <a href="/tags/js%E8%BF%9B%E9%98%B6/" class="print-no-link">#js进阶</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>原型链</div>
+      <div>http://baidu.com/2023/11/17/proto/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>KB</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年11月17日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/11/17/reconciler/" title="Reconciler">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Reconciler</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/11/12/loopInReact/" title="react两大循环">
+                        <span class="hidden-mobile">react两大循环</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'konodioda727/konodioda727');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

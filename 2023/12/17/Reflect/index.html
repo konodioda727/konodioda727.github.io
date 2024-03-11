@@ -1,0 +1,888 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="KB">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="超级棒的Reflect和proxy🍔">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Reflect &amp; Proxy">
+<meta property="og:url" content="http://baidu.com/2023/12/17/Reflect/index.html">
+<meta property="og:site_name" content="Kai&#39;s Blog">
+<meta property="og:description" content="超级棒的Reflect和proxy🍔">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2023/12/16/tGqVrWJTOZ14Re6.jpg">
+<meta property="article:published_time" content="2023-12-17T00:00:00.000Z">
+<meta property="article:modified_time" content="2023-12-16T15:39:28.000Z">
+<meta property="article:author" content="KB">
+<meta property="article:tag" content="前端">
+<meta property="article:tag" content="js进阶">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://s2.loli.net/2023/12/16/tGqVrWJTOZ14Re6.jpg">
+  
+  
+  
+  <title>Reflect &amp; Proxy - Kai&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"baidu.com","root":"/","version":"1.9.5","typing":{"enable":true,"typeSpeed":60,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', '');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Kaiqing Liu</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://s2.loli.net/2023/12/16/QsapPSx49WIDwf8.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Reflect &amp; Proxy"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-12-17 08:00" pubdate>
+          2023年12月17日 早上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          35 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Reflect &amp; Proxy</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="Reflect和Proxy-🥳"><a href="#Reflect和Proxy-🥳" class="headerlink" title="Reflect和Proxy 🥳"></a>Reflect和Proxy 🥳</h1><h2 id="1-Proxy-🕶️"><a href="#1-Proxy-🕶️" class="headerlink" title="1. Proxy 🕶️"></a>1. Proxy 🕶️</h2><h3 id="1-1-语法🤡"><a href="#1-1-语法🤡" class="headerlink" title="1.1 语法🤡"></a>1.1 语法🤡</h3><p>我们可以使用 <code>Proxy()</code> 构造器来创建一个新的 <code>Proxy</code> 对象。构造器接收两个主要参数：</p>
+<ul>
+<li><code>target</code> 被代理的对象</li>
+<li><code>handler</code> 被代理对象上的自定义行为</li>
+</ul>
+<p>像这样：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">new</span> <span class="hljs-title class_">Proxy</span>(target, handler)<br></code></pre></td></tr></table></figure>
+
+<p>一个空的 <code>handler</code> 参数将会创建一个与被代理对象行为几乎完全相同的代理对象。通过在 <code>handler</code> 对象上定义一组处理函数，你可以自定义被代理对象的一些特定行为。例如，通过定义 <code>get()</code> 你就可以自定义被代理对象的属性访问器。</p>
+<h3 id="1-2-handler们😱"><a href="#1-2-handler们😱" class="headerlink" title="1.2 handler们😱"></a>1.2 handler们😱</h3><table>
+<thead>
+<tr>
+<th>名字</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>handler.apply()</td>
+<td>函数调用劫持</td>
+</tr>
+<tr>
+<td>handler.construct()</td>
+<td><code>new</code> 操作符劫持</td>
+</tr>
+<tr>
+<td>handler.defineProperty()</td>
+<td><code>Object.defineProperty</code>调用劫持</td>
+</tr>
+<tr>
+<td>handler.deleteProperty()</td>
+<td><code>delete</code> 操作符劫持</td>
+</tr>
+<tr>
+<td>handler.get()</td>
+<td>获取属性值劫持</td>
+</tr>
+<tr>
+<td>handler.getOwnPropertyDescriptor()</td>
+<td><code>Object.getOwnPropertyDescriptor</code> 调用劫持</td>
+</tr>
+<tr>
+<td>handler.getPrototypeOf()</td>
+<td><code>Object.getPrototypeOf</code>调用劫持</td>
+</tr>
+<tr>
+<td>handler.has()</td>
+<td><code>in</code>操作符劫持</td>
+</tr>
+<tr>
+<td>handler.isExtensible()</td>
+<td><code>Object.isExtensible</code>调用劫持</td>
+</tr>
+<tr>
+<td>handler.ownKeys()</td>
+<td><code>Object.getOwnPropertyNames</code>和<code>Object.getOwnPropertySymbols</code>调用劫持。</td>
+</tr>
+<tr>
+<td>handler.preventExtensions()</td>
+<td><code>Object.preventExtensions</code>调用劫持</td>
+</tr>
+<tr>
+<td>handler.set()</td>
+<td>设置属性值劫持</td>
+</tr>
+<tr>
+<td>handler.setPrototypeOf()</td>
+<td><code>Object.setPrototypeOf</code>调用劫持</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>因为是对对象功能的劫持，所以功能差不多与<code>Object</code>的方法名一一对应🫨</p>
+</blockquote>
+<h3 id="1-3-示例💩"><a href="#1-3-示例💩" class="headerlink" title="1.3 示例💩"></a>1.3 示例💩</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> cs = &#123;<br>    <span class="hljs-title class_">Ak47</span>: <span class="hljs-number">2700</span>,<br>    <span class="hljs-attr">AWP</span>: <span class="hljs-number">4750</span>,<br>    <span class="hljs-attr">amor</span>: <span class="hljs-number">650</span><br>&#125;;<br><br><span class="hljs-keyword">const</span> valorantHandler = &#123;<br>    <span class="hljs-attr">get</span>: <span class="hljs-keyword">function</span> (<span class="hljs-params">target, prop, receiver</span>) &#123;<br>        <span class="hljs-keyword">if</span> (prop === <span class="hljs-string">&quot;AWP&quot;</span>) &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-number">4700</span>;<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-title class_">Reflect</span>.<span class="hljs-title function_">get</span>(...<span class="hljs-variable language_">arguments</span>);<br>    &#125;,<br>&#125;;<br><br><span class="hljs-keyword">const</span> proxy = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Proxy</span>(cs, valorantHandler);<br><span class="hljs-title class_">Object</span>.<span class="hljs-title function_">keys</span>(proxy).<span class="hljs-title function_">map</span>(<span class="hljs-function"><span class="hljs-params">key</span> =&gt;</span> &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(proxy[key])<br>&#125;)<br></code></pre></td></tr></table></figure>
+
+<p>🤪猜猜会输出什么嘞</p>
+<p>🤪打瓦的闭嘴</p>
+<blockquote>
+<p><code>Proxy</code>第一个参数都是<code>target</code>,指定代理的对象；</p>
+<p>第二个参数<code>prop</code>指定代理属性名；</p>
+<p>第三个参数<code>receiver</code>用于指定<code>this</code>指向，如果不加上可能会导致<code>this</code>不会正确配置（不太懂，没找到例子🤔）</p>
+</blockquote>
+<h3 id="1-4-有getter和setter了，为什么还要有个proxy嘞🦢"><a href="#1-4-有getter和setter了，为什么还要有个proxy嘞🦢" class="headerlink" title="1.4 有getter和setter了，为什么还要有个proxy嘞🦢"></a>1.4 有<code>getter</code>和<code>setter</code>了，为什么还要有个<code>proxy</code>嘞🦢</h3><p>虽然 <code>Getter</code> 和 <code>Setter</code> 提供了对单个属性操作的控制，但它们不能直接应用于整个对象或拦截其他类型的操作。<code>Proxy</code> 提供了<em><strong>对整个对象操作的完全控制</strong></em>，可以拦截和自定义几乎所有对对象的操作。这使得 Proxy 在进行复杂操作或创建高级抽象时非常有用。</p>
+<p>还是那段代码，想想看要是想动态加上一个属性<code>m4</code>,不管输入什么最后都打印出0<code>。用</code>getter<code>或者</code>setter<code>怎么写？显然是不可能的，因为</code>getter<code>和</code>setter<code>管不到</code>defineProperties<code>, 但是要换成</code>proxy&#96;就很简单了</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> cs = &#123;<br>    <span class="hljs-title class_">Ak47</span>: <span class="hljs-number">2700</span>,<br>    <span class="hljs-attr">AWP</span>: <span class="hljs-number">4750</span>,<br>    <span class="hljs-attr">amor</span>: <span class="hljs-number">650</span><br>&#125;;<br><br><span class="hljs-keyword">const</span> valorantHandler = &#123;<br>    <span class="hljs-attr">get</span>: <span class="hljs-keyword">function</span> (<span class="hljs-params">target, prop, receiver</span>) &#123;<br>        <span class="hljs-keyword">if</span> (prop === <span class="hljs-string">&quot;AWP&quot;</span>) &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-number">4700</span>;<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-title class_">Reflect</span>.<span class="hljs-title function_">get</span>(...<span class="hljs-variable language_">arguments</span>);<br>    &#125;,<br>    <span class="hljs-title function_">defineProperty</span>(<span class="hljs-params">target, prop, descriptor</span>) &#123;<br>        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Defining property: <span class="hljs-subst">$&#123;prop&#125;</span>`</span>);<br>        <span class="hljs-keyword">if</span>(prop === <span class="hljs-string">&#x27;usp&#x27;</span>) &#123;<br>            <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">0</span>)<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-title class_">Reflect</span>.<span class="hljs-title function_">defineProperty</span>(target, prop, descriptor);<br>    &#125;<br>&#125;;<br><br><span class="hljs-keyword">const</span> proxy = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Proxy</span>(cs, valorantHandler);<br><span class="hljs-title class_">Object</span>.<span class="hljs-title function_">defineProperty</span>(proxy,<span class="hljs-string">&quot;usp&quot;</span>, &#123;<br>    <span class="hljs-attr">value</span>:<span class="hljs-number">8848</span>,<br>    <span class="hljs-attr">enumerable</span>: <span class="hljs-literal">true</span><br>&#125;)<br><span class="hljs-title class_">Object</span>.<span class="hljs-title function_">keys</span>(proxy).<span class="hljs-title function_">map</span>(<span class="hljs-function"><span class="hljs-params">key</span> =&gt;</span> &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(key, proxy[key])<br>&#125;)<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>但是<code>proxy</code>相对于原生<code>object</code>处理速度会慢很多，所以也不能大量使用<code>proxy</code>，会严重影响性能👽</p>
+</blockquote>
+<h2 id="2-Reflect🤕"><a href="#2-Reflect🤕" class="headerlink" title="2. Reflect🤕"></a>2. Reflect🤕</h2><blockquote>
+<p><strong>Reflect</strong> 是一个内置的对象，它提供<em><strong>拦截 JavaScript</strong></em> 操作的方法。这些方法与 <code>proxy </code>的方法相同。<code>Reflect</code> 不是一个函数对象，因此它是<em><strong>不可构造</strong></em>的。</p>
+</blockquote>
+<h3 id="2-1-属性表"><a href="#2-1-属性表" class="headerlink" title="2.1 属性表"></a>2.1 属性表</h3><table>
+<thead>
+<tr>
+<th>名字</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Reflect.apply(target, thisArgument, argumentsList)</td>
+<td>对一个函数进行调用操作，同时可以传入一个数组作为调用参数。和 <code>Function.prototype.apply()</code> 功能类似。</td>
+</tr>
+<tr>
+<td>Reflect.construct(target, argumentsList[, newTarget])</td>
+<td>对构造函数进行 <code>new</code>操作，相当于执行 <code>new target(...args)</code></td>
+</tr>
+<tr>
+<td>Reflect.defineProperty(target, propertyKey, attributes)</td>
+<td>和 <code>Object.defineProperty()</code> 类似。如果设置成功就会返回 <code>true</code></td>
+</tr>
+<tr>
+<td>Reflect.deleteProperty(target, propertyKey)</td>
+<td>作为函数的<code>delete</code>操作符，相当于执行 <code>delete target[name]</code></td>
+</tr>
+<tr>
+<td>Reflect.get(target, propertyKey[, receiver])</td>
+<td>获取对象身上某个属性的值，类似于 <code>target[name]</code>。</td>
+</tr>
+<tr>
+<td>Reflect.getOwnPropertyDescriptor(target, propertyKey)</td>
+<td>类似于 <code>Object.getOwnPropertyDescriptor()</code>如果对象中存在该属性，则返回对应的属性描述符，否则返回 <code>undefined</code>。</td>
+</tr>
+<tr>
+<td>Reflect.getPrototypeOf(target)</td>
+<td>类似于 <code>Object.getPrototypeOf()</code></td>
+</tr>
+<tr>
+<td>Reflect.has(target, propertyKey)</td>
+<td>判断一个对象是否存在某个属性，和 <code>in</code> 运算符 的功能完全相同</td>
+</tr>
+<tr>
+<td>Reflect.isExtensible(target)</td>
+<td>类似于 <code>Object.isExtensible()</code>.</td>
+</tr>
+<tr>
+<td>Reflect.ownKeys(target)</td>
+<td>返回一个包含所有自身属性（不包含继承属性）的数组。(类似于 <code>Object.keys()</code>, 但不会受<code>enumerable</code> 影响).</td>
+</tr>
+<tr>
+<td>Reflect.preventExtensions(target)</td>
+<td>类似于 <code>Object.preventExtensions()</code>返回一个<code>Boolean</code></td>
+</tr>
+<tr>
+<td>Reflect.set(target, propertyKey, value[, receiver])</td>
+<td>将值分配给属性的函数。返回一个<code>Boolean</code>，如果更新成功，则返回<code>true</code>。</td>
+</tr>
+<tr>
+<td>Reflect.setPrototypeOf(target, prototype)</td>
+<td>设置对象原型的函数。返回一个 <code>Boolean</code>，如果更新成功，则返回 <code>true</code>。</td>
+</tr>
+</tbody></table>
+<p>悉心观察可以发现，这上方的所有属性，都来自<code>Object</code>，那么就有问题了，为什么<code>Object</code>上有的属性，还要单拿出来呢？</p>
+<h3 id="2-2-为什么要用Reflect，Object不好吗？😟"><a href="#2-2-为什么要用Reflect，Object不好吗？😟" class="headerlink" title="2.2 为什么要用Reflect，Object不好吗？😟"></a>2.2 为什么要用<code>Reflect</code>，<code>Object</code>不好吗？😟</h3><p>这就又要提到<code>js</code>独有的抽象了🤪</p>
+<p>要知道<code>js</code>可是一门花了整整<em><strong>10天</strong></em>才诞生的语言🤡，那也难免会有抽象的事情发生</p>
+<blockquote>
+<p>点名批评<code>undefined</code>以及<code>arguments</code>😓，一个BYD不是关键字，一个传进去了还能改，属于是抽象巅峰了🤪</p>
+</blockquote>
+<p><code>Object</code>也不例外，有些方法会有<em><strong>局限性</strong></em>以及<em><strong>与标准实现不一致的地方</strong></em> </p>
+<blockquote>
+<p>例如， <code>Object.defineProperty()</code> 用于定义一个新的属性，在成功时返回 <code>true</code>，但在失败时会抛出一个错误。成功失败返回类型不一致，而且还会报错，这很令人恼火😡</p>
+</blockquote>
+<p>那咋办呢？</p>
+<p>ECMA选择了和解决上面的<code>arguments</code>bug一样的解决方法——再写一套不就完了？？？🤣</p>
+<p>于是就有了咱们的<code>Reflect</code></p>
+<p>其实还有一个更重要的原因，也是我把<code>Reflect</code>和<code>Proxy</code>放一起讲的理由： <em><strong><code>Proxy</code> 处理程序的方法与 <code>Reflect</code> 的方法一一对应，这意味着可以在 <code>Proxy</code> 的拦截器函数中直接使用 <code>Reflect</code> 的方法。这使得在创建复杂的代理行为时，能够轻松地维护默认行为，同时添加或修改某些特定的行为。</strong></em></p>
+<h2 id="3-总结🤩"><a href="#3-总结🤩" class="headerlink" title="3. 总结🤩"></a>3. 总结🤩</h2><p><code>proxy</code>和<code>reflect</code>都是很强大的工具，两者结合可以轻松地维护默认行为，同时添加或修改某些特定的行为，实现更高自由度的编程，真的很酷好吗😏</p>
+<p>如果想继续深入了解 <code>Reflect</code>以及<code>Proxy</code>， 可以去MDN上逛逛：</p>
+<p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Reflect">Reflect</a></p>
+<p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy">Proxy</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%89%8D%E7%AB%AF/" class="category-chain-item">前端</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%89%8D%E7%AB%AF/js%E8%BF%9B%E9%98%B6/" class="category-chain-item">js进阶</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%89%8D%E7%AB%AF/" class="print-no-link">#前端</a>
+      
+        <a href="/tags/js%E8%BF%9B%E9%98%B6/" class="print-no-link">#js进阶</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Reflect &amp; Proxy</div>
+      <div>http://baidu.com/2023/12/17/Reflect/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>KB</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年12月17日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/01/24/canvas/" title="canvas简介">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">canvas简介</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/12/01/serviceWorker/" title="Service Worker">
+                        <span class="hidden-mobile">Service Worker</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'konodioda727/konodioda727');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
