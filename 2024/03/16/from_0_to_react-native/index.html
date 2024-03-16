@@ -25,7 +25,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://s2.loli.net/2023/11/17/ea1UdBXujoN7Dpz.png">
 <meta property="article:published_time" content="2024-03-15T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-03-16T05:32:07.574Z">
+<meta property="article:modified_time" content="2024-03-16T07:20:53.087Z">
 <meta property="article:author" content="KB">
 <meta property="article:tag" content="前端">
 <meta property="article:tag" content="react基础">
@@ -250,7 +250,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          4.6k 字
+          4.8k 字
         
       </span>
     
@@ -261,7 +261,7 @@
         
         
         
-          39 分钟
+          41 分钟
         
       </span>
     
@@ -324,10 +324,10 @@
 <p>然而，好像确实是这样😵‍💫</p>
 <p>这里列个大纲，真的有👋就行：</p>
 <ul>
-<li>HTML文件结构：<head>、<body></li>
-<li>HTML常见标签：<div> <span> <h1-6> <a> <p> <form> <input>等</li>
-<li>HTML引入标签：<script> <link> </li>
-<li>HTML5语义化标签：<header> <nav> <main>等</li>
+<li>HTML文件结构：<code>&lt;head&gt;、&lt;body&gt;</code></li>
+<li>HTML常见标签：<code>&lt;div&gt; &lt;span&gt; &lt;h1-6&gt; &lt;a&gt; &lt;p&gt; &lt;form&gt; &lt;input&gt;</code>等</li>
+<li>HTML引入标签：<code>&lt;script&gt; &lt;link&gt; </code></li>
+<li>HTML5语义化标签：<code>&lt;header&gt; &lt;nav&gt; &lt;main&gt;</code>等</li>
 </ul>
 <p>其实还有 <code>音视频标签</code> 和 <code>Canvas</code>这类较难的内容，这里不做展开，只讲最基础的🤠</p>
 <p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/HTML">MDN上的HTML教程</a></p>
@@ -439,7 +439,7 @@
 <p><code>RN</code>支持更多系统api，这对你们来说也是老朋友啦，<a target="_blank" rel="noopener" href="https://reactnative.dev/docs/accessibilityinfo">api文档在这里</a></p>
 </li>
 <li><p>**<code>RN</code>不支持<code>CSS</code>**，因为没有浏览器的<code>runtime</code>，不能解析css用在原生组件上，但是它支持<code>stylesheet</code>这个api，可以用类似于css的方式添加样式：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123;<span class="hljs-title class_">StyleSheet</span>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react-native&quot;</span>;<br><br><span class="hljs-keyword">const</span> styles = <span class="hljs-title class_">StyleSheet</span>.<span class="hljs-title function_">create</span>(&#123;<br>    <span class="hljs-attr">conversationModalButton</span>: &#123;<br>        <span class="hljs-attr">backgroundColor</span>: <span class="hljs-string">&#x27;pink&#x27;</span>,<br>        <span class="hljs-attr">borderRadius</span>: <span class="hljs-number">10</span>,<br>        <span class="hljs-attr">width</span>: <span class="hljs-string">&#x27;80%&#x27;</span>,<br>        <span class="hljs-attr">height</span>: <span class="hljs-string">&#x27;10%&#x27;</span>,<br>        <span class="hljs-attr">display</span>: <span class="hljs-string">&quot;flex&quot;</span>,<br>        <span class="hljs-attr">justifyContent</span>: <span class="hljs-string">&quot;center&quot;</span>,<br>        <span class="hljs-attr">alignItems</span>: <span class="hljs-string">&quot;center&quot;</span>,<br>        <span class="hljs-attr">fontFamily</span>: <span class="hljs-string">&quot;PMingLiU Regular&quot;</span>,<br>        <span class="hljs-attr">fontSize</span>: <span class="hljs-number">24</span>,<br>        <span class="hljs-attr">color</span>: <span class="hljs-string">&quot;#fff&quot;</span><br>    &#125;<br>&#125;)<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> styles<br></code></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123;<span class="hljs-title class_">StyleSheet</span>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react-native&quot;</span>;<br><br><span class="hljs-keyword">const</span> styles = <span class="hljs-title class_">StyleSheet</span>.<span class="hljs-title function_">create</span>(&#123;<br>    <span class="hljs-attr">conversationModalButton</span>: &#123;<br>        <span class="hljs-attr">backgroundColor</span>: <span class="hljs-string">&#x27;pink&#x27;</span>,<br>        <span class="hljs-attr">borderRadius</span>: <span class="hljs-number">10</span>,<br>        <span class="hljs-attr">width</span>: <span class="hljs-string">&#x27;80%&#x27;</span>,<br>        <span class="hljs-attr">height</span>: <span class="hljs-string">&#x27;10%&#x27;</span>,<br>        wq<br><span class="hljs-attr">display</span>: <span class="hljs-string">&quot;flex&quot;</span>,<br>        <span class="hljs-attr">justifyContent</span>: <span class="hljs-string">&quot;center&quot;</span>,<br>        <span class="hljs-attr">alignItems</span>: <span class="hljs-string">&quot;center&quot;</span>,<br>        <span class="hljs-attr">fontFamily</span>: <span class="hljs-string">&quot;PMingLiU Regular&quot;</span>,<br>        <span class="hljs-attr">fontSize</span>: <span class="hljs-number">24</span>,<br>        <span class="hljs-attr">color</span>: <span class="hljs-string">&quot;#fff&quot;</span><br>    &#125;<br>&#125;)<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> styles<br></code></pre></td></tr></table></figure>
 
 <p>然后在组件中引入就行：</p>
 <figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs jsx"><span class="hljs-keyword">import</span> &#123;<span class="hljs-title class_">Button</span>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react-native&quot;</span>;<br><span class="hljs-keyword">import</span> styles <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./button_style&quot;</span>;<br><br><span class="hljs-keyword">const</span> <span class="hljs-title function_">ConversationButton</span> = (<span class="hljs-params">&#123;onClick, title&#125;</span>) =&gt; &#123;<br>    <span class="hljs-keyword">return</span> (<br>        <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Button</span> <span class="hljs-attr">title</span>=<span class="hljs-string">&#123;title&#125;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&#123;styles.conversationModalButton&#125;</span> <span class="hljs-attr">onPress</span>=<span class="hljs-string">&#123;onClick&#125;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">Button</span>&gt;</span></span><br>    )<br>&#125;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title class_">ConversationButton</span><br></code></pre></td></tr></table></figure></li>
