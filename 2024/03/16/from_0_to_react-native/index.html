@@ -1,0 +1,854 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="KB">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="RN简易入门">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从0开始的React native教程🥹">
+<meta property="og:url" content="http://baidu.com/2024/03/16/from_0_to_react-native/index.html">
+<meta property="og:site_name" content="Kai&#39;s Blog">
+<meta property="og:description" content="RN简易入门">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2023/11/17/ea1UdBXujoN7Dpz.png">
+<meta property="article:published_time" content="2024-03-15T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-03-16T05:15:11.737Z">
+<meta property="article:author" content="KB">
+<meta property="article:tag" content="前端">
+<meta property="article:tag" content="react基础">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://s2.loli.net/2023/11/17/ea1UdBXujoN7Dpz.png">
+  
+  
+  
+  <title>从0开始的React native教程🥹 - Kai&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"baidu.com","root":"/","version":"1.9.5","typing":{"enable":true,"typeSpeed":60,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', '');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Kaiqing Liu</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://s2.loli.net/2023/11/17/Dm5YvhQfst1NUWO.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="从0开始的React native教程🥹"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-03-16 00:00" pubdate>
+          2024年3月16日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          39 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">从0开始的React native教程🥹</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="从0开始的React-native教程🥹"><a href="#从0开始的React-native教程🥹" class="headerlink" title="从0开始的React native教程🥹"></a>从0开始的React native教程🥹</h1><h2 id="1-前端基本知识（速成版）"><a href="#1-前端基本知识（速成版）" class="headerlink" title="1.  前端基本知识（速成版）"></a>1.  前端基本知识（速成版）</h2><blockquote>
+<p> <em><strong>简单介绍一下前端三件套：</strong></em></p>
+<ul>
+<li><p>HTML：网页的主干部分，可以理解为骨骼</p>
+</li>
+<li><p>CSS：给页面增加样式，可以理解为皮肤</p>
+</li>
+<li><p>JS：让静态页面动起来，可以理解为肌肉</p>
+</li>
+</ul>
+</blockquote>
+<blockquote>
+<p><em><strong>然后简单介绍一下前端学习的基本路线：</strong></em></p>
+<p>这个是神，前端任何知识点基本都有囊括，有事没事都可以去翻翻：<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/">MDN</a></p>
+</blockquote>
+<p>对于这三座大山，各有各的千秋😣一个个来看</p>
+<h3 id="1-1-HTML咋学🥶"><a href="#1-1-HTML咋学🥶" class="headerlink" title="1.1 HTML咋学🥶"></a>1.1 HTML咋学🥶</h3><p>感觉很少有人注意到这个问题，都感觉HTML有手就行，甚至于给只鸡撒把米都能写</p>
+<p><img src="https://img2.imgtp.com/2024/03/16/vza01YbK.jpeg" srcset="/img/loading.gif" lazyload alt="html"></p>
+<p>然而，好像确实是这样😵‍💫</p>
+<p>这里列个大纲，真的有👋就行：</p>
+<ul>
+<li>HTML文件结构：<head>、<body></li>
+<li>HTML常见标签：<div> <span> <h1-6> <a> <p> <form> <input>等</li>
+<li>HTML引入标签：<script> <link> </li>
+<li>HTML5语义化标签：<header> <nav> <main>等</li>
+</ul>
+<p>其实还有 <code>音视频标签</code> 和 <code>Canvas</code>这类较难的内容，这里不做展开，只讲最基础的🤠</p>
+<p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/HTML">MDN上的HTML教程</a></p>
+<h3 id="1-2-CSS呢🙀"><a href="#1-2-CSS呢🙀" class="headerlink" title="1.2 CSS呢🙀"></a>1.2 CSS呢🙀</h3><p>有了解过前端的同学一定听说过：<em><strong>CSS才是前端最难的一部分</strong></em> </p>
+<p>确实是嗷，但是CSS难在<em><strong>不同选择器不同属性的搭配出好看的视觉效果</strong></em>，其实说语法，也是相当简单的，就是要注意：</p>
+<ul>
+<li><code>各选择器的权重组合计算</code>,</li>
+<li><code>伪类伪元素选择器的概念和作用</code></li>
+<li>最新出的css新特性，比如：<code>is,has,of</code>选择器和<code>css</code>嵌套语法。</li>
+</ul>
+<blockquote>
+<p>入门的话我也写过一篇博客：<a target="_blank" rel="noopener" href="https://konodioda727.github.io/2023/09/10/CSS/">CSS入门</a>，可以参考（这还是招新的时候写的文档🫠）</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/CSS">MDN上CSS的教程</a></p>
+<h3 id="1-3-JS☠️"><a href="#1-3-JS☠️" class="headerlink" title="1.3 JS☠️"></a>1.3 JS☠️</h3><p>直接上图；</p>
+<p><img src="https://img2.imgtp.com/2024/03/16/rV6gzoFW.jpeg" srcset="/img/loading.gif" lazyload alt="抽象JS"></p>
+<p>JS没什么好说的：<strong>如果你的代码出现了问题，请先不要怀疑自己，先怀疑是不是js又犯病了🤡</strong></p>
+<p>JS的语法也是相当简单，没什么条条框框，随便写，要注意的就是</p>
+<ul>
+<li><p>每个类中有大量的方法，需要灵活使用这些内置方法，比如<code>Array</code>类型含有<code>slice</code>,<code>splice</code>,<code>push</code>,<code>pop</code>,<code>shift</code>,<code>unshift</code>等众多方法。</p>
+</li>
+<li><p>同时还有个大哥：<code>DOM(Document Object Module)</code>  ，简单来说就是浏览器提供了一系列api， 让js可以控制html元素，基本的<code>节点增删改查</code>一定要会，比如<code>document.querySelector</code>，<code>document.appendChild</code></p>
+<blockquote>
+<p>在React Native中，<code>DOM</code>操作很受限：不能自由增加、删除节点</p>
+</blockquote>
+</li>
+<li><p><code>ES6+</code>新加功能: </p>
+<ul>
+<li><code>Promise（这个不是新加功能）</code>，<code>async/await</code>：异步操作，网络请求都要用他俩</li>
+<li><code>class</code>语法，这对你们来说肯定是小<code>case</code>啦</li>
+<li><code>import</code> <code>export</code>语法</li>
+<li><code>...args</code>：解构语法</li>
+<li>等等等等</li>
+</ul>
+</li>
+</ul>
+<p>好好看<code>MDN</code>好好学</p>
+<h2 id="2-bundler、开发服务器和runtime😎"><a href="#2-bundler、开发服务器和runtime😎" class="headerlink" title="2. bundler、开发服务器和runtime😎"></a>2. bundler、开发服务器和runtime😎</h2><h3 id="2-1-bundler"><a href="#2-1-bundler" class="headerlink" title="2.1 bundler"></a>2.1 bundler</h3><p>上边的三件套是写一个基本网页的基本要求。在这些要求之外，为了优化性能，还要把code打包压缩一下，这就要提到我们的<code>bundler</code>，现在流行的<code>bundler</code>：</p>
+<ul>
+<li>webpack：老东西，很慢，但是是很多框架的默认打包工具，比较底层，有很多插件可以用，想了解<code>bundler</code>原理可以看看</li>
+<li>vi te：现在最流行的打包工具，比webpack快很多，中文文档很详细，毕竟是中国人写的</li>
+<li>parcel：开箱即用，速度快，不用什么配置</li>
+<li>bun：最近横空出世的网红打包工具、开发服务器和runtime，只支持<code>类unix</code>，比vite还快一些</li>
+</ul>
+<h3 id="2-2-开发服务器"><a href="#2-2-开发服务器" class="headerlink" title="2.2 开发服务器"></a>2.2 开发服务器</h3><p>一般的打包工具都会配置一个<code>server</code>.</p>
+<p>就比如<code>bun</code>，默认直接<code>bun run dev</code>就可以跑，之后在浏览器直接打开页面就行，一般是<code>localhost:5173</code></p>
+<p>同时使用框架的构建工具的同时，基本会配置好这一项，只用去<code>package.json</code>看相关配置就行，下面讲讲<code>package.json</code></p>
+<h3 id="2-3-runtime"><a href="#2-3-runtime" class="headerlink" title="2.3 runtime"></a>2.3 runtime</h3><p>正常js运行在浏览器中，runtime自然就是浏览器中的js引擎，而如果在<code>Node</code>就是<code>node</code>的runtime，包含解释引擎和一些包含文件管理等的模块。</p>
+<p>在<code>RN</code>中也是如此，<code>RN</code>提供了<code>Hermes</code>这个runtime，因为没有浏览器的环境，因此很多dom操作也会🚫</p>
+<h2 id="3-依赖管理🥰"><a href="#3-依赖管理🥰" class="headerlink" title="3. 依赖管理🥰"></a>3. 依赖管理🥰</h2><p>首先，要装个<code>Node</code></p>
+<blockquote>
+<p>如果你用<code>bun</code>，那也行，但接下来我都按<code>node</code>讲</p>
+<p><code>bun</code>的话遵循下面的转换规则：</p>
+<ul>
+<li><code>npm i &lt;pcakage&gt;</code> 换成<code>bun add &lt;package&gt;</code></li>
+<li><code>npm i </code> 换成 <code>bun i</code></li>
+<li><code>npx</code> 换成 <code>bunx</code></li>
+</ul>
+</blockquote>
+<p>刚刚不是说讲讲<code>package.json</code>吗，怎么讲<code>Node</code>了？😱</p>
+<p>你先别急，不讲<code>server</code>端的东西，讲讲它的故事</p>
+<p>当你去下载<code>Node</code>的时候，会有两个东西被一起下载下来：<code>npm</code>和<code>npx</code>,他俩就像那个舒克和贝塔：</p>
+<ul>
+<li><code>npm</code>：管理包的</li>
+<li><code>npx</code>：把包拿出来溜溜的</li>
+</ul>
+<p>下好之后，执行: <code>npm init</code>初始化，或者<code>npm init -y</code>一切都按默认配置来，这个时候就能看见<code>package.json</code>，初学只需要知道三个信息：</p>
+<ul>
+<li>dependencies：开发模式和生产模式公用的依赖，一般是核心功能的包</li>
+<li>devdependencies：开发模式的依赖，一般是测试，代码审查、打包工具之类的</li>
+<li>scripts：快捷方式</li>
+</ul>
+<h2 id="4-好啦，这些基本知识都有啦，来看看React😊"><a href="#4-好啦，这些基本知识都有啦，来看看React😊" class="headerlink" title="4. 好啦，这些基本知识都有啦，来看看React😊"></a>4. 好啦，这些基本知识都有啦，来看看React😊</h2><p>React的核心就是<code>JSX</code>语法，什么意思呢，就是可以把<code>html</code>和<code>js</code>揉在一起写，像这样：</p>
+<figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs tsx"><span class="hljs-keyword">import</span> <span class="hljs-title class_">Login</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@/components/login/login&quot;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-title class_">PageWrap</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@/components/pageWrap/pageWrap&quot;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-title class_">React</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react&quot;</span>;<br><span class="hljs-keyword">import</span> &#123;stuLoginConfig&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@/configs/loginConfig&quot;</span>;<br><br><span class="hljs-keyword">const</span> <span class="hljs-title class_">StuLogin</span>: <span class="hljs-title class_">React</span>.<span class="hljs-property">FC</span> = <span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-keyword">const</span> &#123;loginProps, topBarProps&#125; = stuLoginConfig<br>  <span class="hljs-keyword">return</span> (<br>    <span class="language-xml"><span class="hljs-tag">&lt;&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;<span class="hljs-name">PageWrap</span> <span class="hljs-attr">topBarProps</span>=<span class="hljs-string">&#123;topBarProps&#125;</span>&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">Login</span> &#123;<span class="hljs-attr">...loginProps</span>&#125;&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">Login</span>&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">PageWrap</span>&gt;</span></span><br><span class="language-xml">    <span class="hljs-tag">&lt;/&gt;</span></span><br>  )<br>&#125;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title class_">StuLogin</span><br><br></code></pre></td></tr></table></figure>
+
+
+
+<p><code>JSX</code>的核心是<code>hooks</code>，React提供了一些默认<code>hooks</code>，比如<code>useState</code>，<code>useEffect</code>，<code>useCallback</code>等</p>
+<p>可以看看<a target="_blank" rel="noopener" href="https://react.dev/reference/react/hooks">官方文档</a>，这里不多赘述</p>
+<p>最后最后，组件化这件事，也不用多说了，通过export和import就可以实现灵活的引入导出组件</p>
+<p>然后看看文件结构，就差不多可以毕业了</p>
+<h2 id="5-React-Native🤪"><a href="#5-React-Native🤪" class="headerlink" title="5. React Native🤪"></a>5. React Native🤪</h2><p><a target="_blank" rel="noopener" href="https://reactnative.dev/docs/environment-setup">Native官网</a></p>
+<p>看名字也看得出来，<code>React Native</code>是基于<code>React</code>的一款上层框架，所以之前学的<code>React</code>语法要派的上用场咯👆</p>
+<blockquote>
+<p>你们有sdk的用哪个方法跑都可以，但我个人还是比较推荐<code>expo</code>的方法：手机上下个<code>expo</code>，扫个码就能在手机上跑，或者直接在浏览器上跑</p>
+</blockquote>
+<p>然后,来讲讲<code>RN</code>与<code>React</code>不同的地方:</p>
+<ul>
+<li><p><strong>组件不同</strong>，<code>RN</code>中不能使用原始的<code>HTML</code>标签，<code>RN</code>提供的标签有：</p>
+<ul>
+<li><strong>View</strong>：<code>&lt;View&gt;</code> 组件类似于 Web 开发中的 <code>&lt;div&gt;</code> 元素，用于创建一个视图容器，可以包含其他组件，并且可以进行布局和样式控制。</li>
+<li><strong>Text</strong>：<code>&lt;Text&gt;</code> 组件用于显示文本内容，类似于 Web 开发中的 <code>&lt;span&gt;</code> 元素，但是具有更多的文本样式控制属性。</li>
+<li><strong>Image</strong>：<code>&lt;Image&gt;</code> 组件用于显示图片，可以加载本地图片或远程图片，并且支持缩放、裁剪和加载中状态。</li>
+<li><strong>TextInput</strong>：<code>&lt;TextInput&gt;</code> 组件用于接收用户输入的文本，类似于 Web 开发中的 <code>&lt;input&gt;</code> 元素，可以实现文本输入框、密码输入框等功能。</li>
+<li><strong>ScrollView</strong>：<code>&lt;ScrollView&gt;</code> 组件用于创建一个可滚动的视图容器，可以包含大量的子组件，并且支持垂直和水平方向的滚动。</li>
+<li><strong>FlatList</strong>：<code>&lt;FlatList&gt;</code> 组件用于渲染长列表数据，性能更高，支持基于数据源的渲染方式，适用于大型数据集合。</li>
+<li><strong>TouchableOpacity</strong>：<code>&lt;TouchableOpacity&gt;</code> 组件用于实现触摸事件的响应，类似于 Web 开发中的按钮元素，但可以实现点击时的视觉反馈效果。</li>
+<li><strong>TouchableHighlight</strong>：<code>&lt;TouchableHighlight&gt;</code> 组件也用于实现触摸事件的响应，与 <code>&lt;TouchableOpacity&gt;</code> 类似，但是在被按下时会有不同的视觉效果。</li>
+<li><strong>ActivityIndicator</strong>：<code>&lt;ActivityIndicator&gt;</code> 组件用于显示加载指示器，通常用于表示正在加载或处理中的状态。</li>
+</ul>
+</li>
+<li><p><strong>事件不同，元素属性不同</strong></p>
+<blockquote>
+<p>比如，在<code>RN</code>中，并不支持<code>onClick</code>属性，要绑定按压事件等话要使用<code>onPress</code>，也不是所有属性都支持<code>onPress</code>，如果想给不支持<code>onPress</code>的组件增加事件监听，就要用到上边的<code>Touchable</code>等标签。</p>
+</blockquote>
+<p>要想看看每个组件的<code>props</code>，还得去看官方文档：这里拿<a target="_blank" rel="noopener" href="https://reactnative.dev/docs/view">View</a>举例</p>
+</li>
+<li><p><strong>更多的api</strong></p>
+<p><code>RN</code>支持更多系统api，这对你们来说也是老朋友啦，<a target="_blank" rel="noopener" href="https://reactnative.dev/docs/accessibilityinfo">api文档在这里</a></p>
+</li>
+<li><p>**<code>RN</code>不支持<code>CSS</code>**，因为没有浏览器的<code>runtime</code>，不能解析css用在原生组件上，但是它支持<code>stylesheet</code>这个api，可以用类似于css的方式添加样式：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123;<span class="hljs-title class_">StyleSheet</span>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react-native&quot;</span>;<br><br><span class="hljs-keyword">const</span> styles = <span class="hljs-title class_">StyleSheet</span>.<span class="hljs-title function_">create</span>(&#123;<br>    <span class="hljs-attr">conversationModalButton</span>: &#123;<br>        <span class="hljs-attr">backgroundColor</span>: <span class="hljs-string">&#x27;pink&#x27;</span>,<br>        <span class="hljs-attr">borderRadius</span>: <span class="hljs-number">10</span>,<br>        <span class="hljs-attr">width</span>: <span class="hljs-string">&#x27;80%&#x27;</span>,<br>        <span class="hljs-attr">height</span>: <span class="hljs-string">&#x27;10%&#x27;</span>,<br>        <span class="hljs-attr">display</span>: <span class="hljs-string">&quot;flex&quot;</span>,<br>        <span class="hljs-attr">justifyContent</span>: <span class="hljs-string">&quot;center&quot;</span>,<br>        <span class="hljs-attr">alignItems</span>: <span class="hljs-string">&quot;center&quot;</span>,<br>        <span class="hljs-attr">fontFamily</span>: <span class="hljs-string">&quot;PMingLiU Regular&quot;</span>,<br>        <span class="hljs-attr">fontSize</span>: <span class="hljs-number">24</span>,<br>        <span class="hljs-attr">color</span>: <span class="hljs-string">&quot;#fff&quot;</span><br>    &#125;<br>&#125;)<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> styles<br></code></pre></td></tr></table></figure>
+
+<p>然后在组件中引入就行：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs jsx"><span class="hljs-keyword">import</span> &#123;<span class="hljs-title class_">Button</span>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react-native&quot;</span>;<br><span class="hljs-keyword">import</span> styles <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./button_style&quot;</span>;<br><br><span class="hljs-keyword">const</span> <span class="hljs-title function_">ConversationButton</span> = (<span class="hljs-params">&#123;onClick, title&#125;</span>) =&gt; &#123;<br>    <span class="hljs-keyword">return</span> (<br>        <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Button</span> <span class="hljs-attr">title</span>=<span class="hljs-string">&#123;title&#125;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&#123;styles.conversationModalButton&#125;</span> <span class="hljs-attr">onPress</span>=<span class="hljs-string">&#123;onClick&#125;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">Button</span>&gt;</span></span><br>    )<br>&#125;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title class_">ConversationButton</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%89%8D%E7%AB%AF/" class="category-chain-item">前端</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%89%8D%E7%AB%AF/react%E5%9F%BA%E7%A1%80/" class="category-chain-item">react基础</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%89%8D%E7%AB%AF/" class="print-no-link">#前端</a>
+      
+        <a href="/tags/react%E5%9F%BA%E7%A1%80/" class="print-no-link">#react基础</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>从0开始的React native教程🥹</div>
+      <div>http://baidu.com/2024/03/16/from_0_to_react-native/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>KB</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年3月16日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/03/06/refactor/" title="重构的艺术">
+                        <span class="hidden-mobile">重构的艺术</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'konodioda727/konodioda727');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
