@@ -1,0 +1,874 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="KB">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="最近都没空写文档咯，半天憋出来这一篇1️⃣">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JS的GC到底怎么工作的？💼">
+<meta property="og:url" content="http://baidu.com/2024/05/01/gc/index.html">
+<meta property="og:site_name" content="Kai&#39;s Blog">
+<meta property="og:description" content="最近都没空写文档咯，半天憋出来这一篇1️⃣">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2023/11/17/fEWYMv5dLVtN43B.jpg">
+<meta property="article:published_time" content="2024-05-01T11:15:32.552Z">
+<meta property="article:modified_time" content="2024-05-06T06:55:53.352Z">
+<meta property="article:author" content="KB">
+<meta property="article:tag" content="前端">
+<meta property="article:tag" content="js进阶">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://s2.loli.net/2023/11/17/fEWYMv5dLVtN43B.jpg">
+  
+  
+  
+  <title>JS的GC到底怎么工作的？💼 - Kai&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"baidu.com","root":"/","version":"1.9.5","typing":{"enable":true,"typeSpeed":60,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', '');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Kaiqing Liu</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://s2.loli.net/2023/11/17/kQL4x7KyT1h3DCI.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="JS的GC到底怎么工作的？💼"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-05-01 19:15" pubdate>
+          2024年5月1日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          46 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">JS的GC到底怎么工作的？💼</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="JS的GC到底怎么工作的？💼"><a href="#JS的GC到底怎么工作的？💼" class="headerlink" title="JS的GC到底怎么工作的？💼"></a>JS的GC到底怎么工作的？💼</h1><h2 id="引子：-啥是GC，为什么需要GC🗑️"><a href="#引子：-啥是GC，为什么需要GC🗑️" class="headerlink" title="引子： 啥是GC，为什么需要GC🗑️"></a>引子： 啥是GC，为什么需要GC🗑️</h2><p><code>GC</code>看起来高端，其实就是 <code>垃圾回收机制(Garbage Collection)</code> 的英文简称，主要负责清理执行过程中遗留的未被使用的变量，避免程序执行过程中耗尽内存而崩溃。</p>
+<blockquote>
+<p><strong>注意⚠️</strong></p>
+<p>高级编程语言中，<code>GC</code>似乎成了一个必需品。但是需要注意的是，像<code>C</code>&#x2F;<code>CPP</code>这种偏底层的语言中，<code>GC</code>是不存在的。</p>
+<p><em><strong>为什么呢？？？🥲</strong></em></p>
+<p>其实这么做也是有原因的</p>
+<ol>
+<li>由于<code>GC</code>运行比较耗时，在高级语言中性能可能不是问题，但在C&#x2F;C++中，这可是不被允许的</li>
+<li>C&#x2F;C++的设计哲学就是把控制权交给程序员，加上GC显然违背了设计理念</li>
+</ol>
+<p><strong>这种把所有控制权都交给程序员的做法可能很酷，但是会给日常开发带来很多麻烦，对于咱们这种三脚猫🐱来说是很痛苦的</strong></p>
+</blockquote>
+<p>反观咱们JS，主打就是一个</p>
+<ul>
+<li>皮实☝️，</li>
+<li>性能什么的也不用在乎了（反正本来就是一片废墟了）</li>
+<li>开发怎么舒服怎么来（虽然奇奇怪怪的bug让人很😖）</li>
+</ul>
+<p><em><strong>已经在谷底了，怎么走都是向上🔝</strong></em></p>
+<hr>
+<p>因此，有个<code>GC</code>很合理吧🤓。那么，今天就来讨论讨论</p>
+<ul>
+<li><code>JS</code>的<code>GC</code>到底是怎么工作的？</li>
+<li>那些操作会绕过<code>GC</code>，造成内存泄漏？</li>
+<li>如何查看是否内存泄漏？</li>
+<li>如何预防内存泄漏</li>
+</ul>
+<h2 id="拓展知识-编译器、作用域、引擎的爱恨情仇🤡"><a href="#拓展知识-编译器、作用域、引擎的爱恨情仇🤡" class="headerlink" title="拓展知识: 编译器、作用域、引擎的爱恨情仇🤡"></a>拓展知识: 编译器、作用域、引擎的爱恨情仇🤡</h2><p>大家都知道，JS的执行分为 <code>编译</code>和<code>执行</code>两个阶段。那么这两个阶段都干了什么事呢？这两个阶段跟作用域又有什么关系呢？</p>
+<h3 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h3><p>编译阶段看名字也知道，是编译器在干活，主要干两件事：</p>
+<ul>
+<li>把变量放到作用域里边</li>
+<li>给之后的引擎编译执行代码</li>
+</ul>
+<p>那么，它又是如何做到识别变量的呢？这可是字节的面试题，仔细听</p>
+<p>来看例子：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">let</span> a = <span class="hljs-number">4</span>;<br></code></pre></td></tr></table></figure>
+
+<p>这个例子中，编译器先会把上边的句子分成 <code>let, a, =, 4</code>几个部分，这一步叫<code>词法分析</code>，</p>
+<p>之后，它会根据词法分析的结果，构建抽象语法树<code>AST</code>，构建出来的树首先有一个<code>Variable Declearation</code>的父节点，下来的子节点是<code>Identifier</code>，就是<code>a</code>，与他为兄弟节点的是<code>AssignmentExpression</code>，代表赋值操作，它也有一个子节点，是<code>NumericLiteral</code>，代表数字。</p>
+<p>遇到<code>let a</code>，编译器先向作用域询问是否存在<code>a</code>这个变量，如果存在，就抛出错误</p>
+<blockquote>
+<p>思考：如果把 <code>let</code>改成<code>var</code>呢？</p>
+</blockquote>
+<p>如果不存在，由上边AST得知是一个基本类型变量<code>NUmbericLiteral</code>，在栈内存中开辟一个变量<code>a</code>，在作用域里新建一个<code>a</code>；</p>
+<p>如果是一个引用对象，即AST中<code>AssignmentExpression</code>子节点为<code>Reference</code>，那么就会把内容存入堆内存，栈中创建新变量保留堆地址</p>
+<p><img src="https://img-blog.csdnimg.cn/4458babe7fae4db0bb16be3f73586d75.png#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>之后，编译器才会处理<code>a=2</code>语句，它会把这个语句编译为引擎能执行的句法，把压力交给引擎</p>
+<h3 id="引擎"><a href="#引擎" class="headerlink" title="引擎"></a>引擎</h3><p>引擎在执行上一步生成的代码时，会查找变量的声明，就比如上边的例子，引擎执行时会询问作用域是否存在<code>a</code>变量，查找也分为两种：<code>LHS</code>和<code>RHS</code>，分别代表地址查询和值查询，这里的<code>a</code>就是一个地址查询，因为要把值赋给它嘛。很好理解吧！好！那我们进入正题咯</p>
+<h2 id="Part1-JS的GC到底怎么工作的💼"><a href="#Part1-JS的GC到底怎么工作的💼" class="headerlink" title="Part1: JS的GC到底怎么工作的💼"></a>Part1: JS的GC到底怎么工作的💼</h2><p>🗑️垃圾回收机制的原理很简单，就跟把🐘塞到冰箱一样，主要分为三步</p>
+<ol>
+<li>找出不再使用的变量</li>
+<li>释放其占用的内存</li>
+<li>固定的时间间隔运行</li>
+</ol>
+<p>可以看到，只要第一步做对了，那第二、第三步就是洒洒水🙂‍↕️，那么引擎是如何找到不再使用的变量的呢？</p>
+<p>再来给大家科普一下<code>ECMA</code>吧🥰</p>
+<blockquote>
+<p><code>ECMA</code>是<code>JS</code>的规范，按道理来说<code>JS</code>其实应该叫做<code>ECMAScript</code>，或者说是<code>ECMAScript</code>的一种。<code>JS</code>的所有特性都是由<code>ECMA</code>决定的</p>
+<p>![image-20240428171503709](&#x2F;Users&#x2F;lawkaiqing&#x2F;Library&#x2F;Application Support&#x2F;typora-user-images&#x2F;image-20240428171503709.png)</p>
+</blockquote>
+<p>那么，在ECMA中，有没有GC的定义呢？</p>
+<p>很遗憾，没有，在ECMA中并没有GC的相关定义，所以GC似乎是靠各浏览器厂商自由发挥的，查了一下，大概分为两种方法。</p>
+<h3 id="1-计数清除"><a href="#1-计数清除" class="headerlink" title="1. 计数清除"></a>1. 计数清除</h3><p>计数清除主要是咱们大名鼎鼎的<code>IE</code>在使用，原理很简单，就是<strong>当这个变量被引用时，计数加一，解除引用时，计数减一</strong>，当计数为零的时候，这个变量就会被GC回收</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">test</span>(<span class="hljs-params"></span>)&#123;<br>  <span class="hljs-keyword">let</span> a = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Object</span>(); <span class="hljs-comment">// a = 1</span><br>  <span class="hljs-keyword">let</span> b = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Object</span>(); <span class="hljs-comment">// b = 1</span><br>  <br>  <span class="hljs-keyword">let</span> c = a; <span class="hljs-comment">// a++ -&gt; 2</span><br>  <span class="hljs-keyword">let</span> c = b; <span class="hljs-comment">// a-- -&gt; 1</span><br>  <br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这里就要用到咱们上边提到的预备知识啦</p>
+<ul>
+<li>你看这个<code>let a = new Object();</code>，<code>new Object</code>在堆新建变量，然后栈中<code>a</code>引用这个object，count++；</li>
+</ul>
+<blockquote>
+<p> 在下方，<code>let c = a</code>的时候，构建的AST语法树是怎么样的呢？为什么这个时候引用会是2呢？</p>
+</blockquote>
+<p>那来看下一个例子：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">Person</span>(<span class="hljs-params"></span>)&#123;<br>	<span class="hljs-keyword">let</span> a=&#123;&#125;;<br>	<span class="hljs-keyword">let</span> b=&#123;&#125;;<br>	a.<span class="hljs-property">prop</span> = b;<br>	b.<span class="hljs-property">prop</span> = a;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这里a和b的引用次数是多少呢？</p>
+<p>不难看出，这里a和b的引用次数都是1，这代表着两个变量都不会被GC回收，这就是计数清除掉一大缺点：<strong>循环引用</strong></p>
+<p>那这下就糟糕了，一旦有循环引用出现，就会引发内存泄漏，太危险了‼️</p>
+<p>而且，这种做法计数器更改的会很频繁，每一次赋值操作可能都会更改计数器，因此也被抛弃在时代的长河中。</p>
+<h3 id="2-标记清除"><a href="#2-标记清除" class="headerlink" title="2. 标记清除"></a>2. 标记清除</h3><p>这是目前浏览器大多基于标记清除法。我们可以分为两个阶段：</p>
+<ul>
+<li><strong>标记</strong>：从根节点遍历为每个可以访问到的对象都打上一个标记，表示该对象可达。</li>
+<li><strong>清除</strong>：在没有可用分块时，对堆内存遍历，若没有被标记为可达对象就将其回收。</li>
+</ul>
+<p>这下子就很暴力了，直接遍历这个AST，没找到的变量就不打标记🏷️</p>
+<p>而且完美解决了计数清除的两大问题🙋‍♀️：</p>
+<ul>
+<li>循环引用 -&gt; 打标记哪来的循环引用</li>
+<li>计数器更改频繁 -&gt; 要没空间了才遍历整棵树，改动次数大大减少</li>
+</ul>
+<p>但是，这样不是完美的，主要有两大缺点：</p>
+<ul>
+<li>内存碎片化，删除没标记的变量的内存是随机的，很零散</li>
+<li>内存分配速度慢，由于内存随机，所以速度慢</li>
+</ul>
+<p>针对这些问题，就衍生出了<strong>标记-整理</strong>法</p>
+<p><img src="https://img-blog.csdnimg.cn/5b845752427c497389980380b6181007.png#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>标记阶段一致，不过在分配的过程中，把被引用的对象移到一端，凑出完整的内存空间</p>
+<h3 id="3-NodeJs-V8-中的垃圾回收机制"><a href="#3-NodeJs-V8-中的垃圾回收机制" class="headerlink" title="3. NodeJs V8 中的垃圾回收机制"></a>3. NodeJs V8 中的垃圾回收机制</h3><p>在 Node 中，通过 JS 使用内存时就会发现只能使用部分内存（64 位系统下约为 1.4 GB, 32 位系统下约为 0.7 GB），这导致 Node 无法直接操作大内存对象。</p>
+<p>这是因为，以 1.5GB 的垃圾回收堆内存为例，V8 做一次小的垃圾回收需要 50 毫秒以上，做一次非增量式的垃圾回收要 1 秒以上，而垃圾回收过程会引起 JS 线程暂停执行这么多时间。因此，在当时的考虑下，直接限制堆内存是一个好的选择。（目前已经可以并行）</p>
+<h3 id="3-那么，在这个情况下，V8会怎么做？"><a href="#3-那么，在这个情况下，V8会怎么做？" class="headerlink" title="3.那么，在这个情况下，V8会怎么做？"></a>3.那么，在这个情况下，V8会怎么做？</h3><p><img src="https://img-blog.csdnimg.cn/4d0d1931a1084ee39b1deb00c38ed534.png#pic_center" srcset="/img/loading.gif" lazyload alt="新老生代视图"></p>
+<p>chrome把内存分为两个区，新生代和老生代，老生代就是常驻嘉宾🤨，新生代就是存活时间较短的变量，对于这两个区，垃圾回收的频次是不一样的。来看看吧</p>
+<h4 id="1-新生代"><a href="#1-新生代" class="headerlink" title="1. 新生代"></a>1. 新生代</h4><p>新生代可以看到，把内存分为 使用区 和 空闲区，新加入的对象都会被存放到使用区，当使用区<strong>快被写满时</strong>，就执行一次垃圾回收操作。由此还引出了 Scavenge 算法</p>
+<blockquote>
+<p>Scavenge 流程如下：</p>
+<ul>
+<li>标记活动对象和非活动对象</li>
+<li>复制 from space 的活动对象到 to space 并对其进行排序</li>
+<li>释放 from space 中的非活动对象的内存</li>
+<li>将 from space 和 to space 角色互换</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/yacan8/blog/master/images/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3Chrome%20V8%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6/image-20200925123816388.png" srcset="/img/loading.gif" lazyload alt="image-20200925123816388"></p>
+</blockquote>
+<p><em><strong>那么，新生代对象如何才能变成老生代呢？</strong></em></p>
+<ul>
+<li>第一种情况：经过多次复制后依然存活的对象会被认为是生命周期较强的对象，会被移到老生代管理。</li>
+<li>第二种情况：如果复制一个对象到空闲区时，空闲区空间占用超过25%，那么这个对象将被移到老生代区域。原因是，当完成回收后，空闲区转变成使用区，需继续进行内存分配，若占比过大，将会影响后续内存的分配。</li>
+</ul>
+<h4 id="2-老生代"><a href="#2-老生代" class="headerlink" title="2. 老生代"></a>2. 老生代</h4><p>老生代内容不需要怎么清理，采用的方法就是上边说的<strong>标记-整理</strong>。</p>
+<h4 id="3-增量标记算法"><a href="#3-增量标记算法" class="headerlink" title="3. 增量标记算法"></a>3. 增量标记算法</h4><p>前面的三种算法，都需要将正在执行的 JavaScript 应用逻辑暂停下来，待垃圾回收完毕后再恢复。这种行为叫作“全停顿”（stop-the-world）。</p>
+<p>在 V8 新生代的分代回收中，只收集新生代，而新生代通常配置较小，且存活对象较少，所以全停顿的影响不大，而老生代就相反了。</p>
+<p>为了降低全部老生代全堆垃圾回收带来的停顿时间，V8将标记过程分为一个个的子标记过程，同时让垃圾回收标记和JS应用逻辑交替进行，直到标记阶段完成。</p>
+<p><img src="https://pic3.zhimg.com/80/v2-a3b04ebaacf8f2b04309b68bcf37f72e_1440w.webp" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>经过增量标记改进后，垃圾回收的最大停顿时间可以减少到原来的 1&#x2F;6 左右。</p>
+<h2 id="Part2-怎么欺骗GC🥰"><a href="#Part2-怎么欺骗GC🥰" class="headerlink" title="Part2. 怎么欺骗GC🥰"></a>Part2. 怎么欺骗GC🥰</h2><p>要做到欺骗GC，那就要破坏掉GC的工作条件咯，可以看到，只要变量可达，就不会被删除</p>
+<p>那么怎么做到变量可达，又没什么用呢？</p>
+<h3 id="1-那当然是闭包啦！"><a href="#1-那当然是闭包啦！" class="headerlink" title="1. 那当然是闭包啦！"></a>1. 那当然是闭包啦！</h3><p>来看例子：</p>
+<p>以下代码就会引发内存泄漏哦</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> <span class="hljs-title function_">fun1</span> = (<span class="hljs-params"></span>) =&gt; &#123;<br>  <span class="hljs-keyword">const</span> arr = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Array</span><br>  arr.<span class="hljs-property">length</span> = <span class="hljs-number">1008658</span><br>  <span class="hljs-keyword">return</span> <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;<br>     <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(arr);<br>  &#125;<br>&#125;<br><span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-keyword">const</span> b = <span class="hljs-title function_">fun1</span>()<br>&#125;, <span class="hljs-number">6000</span>)<br></code></pre></td></tr></table></figure>
+
+<h3 id="2-那当然是全局变量啦"><a href="#2-那当然是全局变量啦" class="headerlink" title="2. 那当然是全局变量啦"></a>2. 那当然是全局变量啦</h3><p>声明过多的全局变量，会导致变量变为常驻内存，要直到进程结束才能释放内存。</p>
+<blockquote>
+<p>⚠️注意：</p>
+<h4 id="不仅仅是声明的变量会导致常驻内存，我们的计时器，是不是也挂载在globalThis上边呢？"><a href="#不仅仅是声明的变量会导致常驻内存，我们的计时器，是不是也挂载在globalThis上边呢？" class="headerlink" title="不仅仅是声明的变量会导致常驻内存，我们的计时器，是不是也挂载在globalThis上边呢？"></a>不仅仅是声明的变量会导致常驻内存，我们的计时器，是不是也挂载在<code>globalThis</code>上边呢？</h4><p>因此，来看看例子吧：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs js">i = <span class="hljs-number">0</span>;<br><span class="hljs-keyword">const</span> <span class="hljs-title function_">handleClick</span> = (<span class="hljs-params"></span>) =&gt; &#123;<br>   <span class="hljs-keyword">while</span> (i &lt; <span class="hljs-number">1000</span>) &#123;<br>      <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>         i++;<br>      &#125;, <span class="hljs-number">0</span>);<br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>运行看看，会是怎么样的？不过要慎用，小心页面崩溃！！！</p>
+<h4 id="同样的，还有挂载在globalThis上的事件监听"><a href="#同样的，还有挂载在globalThis上的事件监听" class="headerlink" title="同样的，还有挂载在globalThis上的事件监听"></a>同样的，还有挂载在<code>globalThis</code>上的事件监听</h4></blockquote>
+<h2 id="Part3-如何查看是否内存泄漏？👻"><a href="#Part3-如何查看是否内存泄漏？👻" class="headerlink" title="Part3. 如何查看是否内存泄漏？👻"></a>Part3. 如何查看是否内存泄漏？👻</h2><p>Chrome已经把工具给咱们做好啦，就在开发者面板上。</p>
+<p>别忘了把旁边的<code>内存</code>打开！！！</p>
+<p>![image-20240506144233098](&#x2F;Users&#x2F;lawkaiqing&#x2F;Library&#x2F;Application Support&#x2F;typora-user-images&#x2F;image-20240506144233098.png)</p>
+<p>就拿上边的</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> <span class="hljs-title function_">fun1</span> = (<span class="hljs-params"></span>) =&gt; &#123;<br>  <span class="hljs-keyword">const</span> arr = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Array</span><br>  arr.<span class="hljs-property">length</span> = <span class="hljs-number">1008658</span><br>  <span class="hljs-keyword">return</span> <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;<br>     <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(arr);<br>  &#125;<br>&#125;<br><span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-keyword">const</span> b = <span class="hljs-title function_">fun1</span>()<br>&#125;, <span class="hljs-number">6000</span>)<br></code></pre></td></tr></table></figure>
+
+<p>举例吧！</p>
+<p>![image-20240506144405667](&#x2F;Users&#x2F;lawkaiqing&#x2F;Library&#x2F;Application Support&#x2F;typora-user-images&#x2F;image-20240506144405667.png)</p>
+<p>可以看到中间框内，<em><strong>内存只升不降，那就是造成了内存泄漏</strong></em>；</p>
+<p>或者如果是点击事件，一般认为，<em><strong>五次连续点击后，仍没被回收，那就是内存泄漏</strong></em>，换句话说，就是图中呈现连续向上的五个阶梯，那就是内存泄漏</p>
+<h2 id="Part4-如何预防内存泄漏🥲"><a href="#Part4-如何预防内存泄漏🥲" class="headerlink" title="Part4. 如何预防内存泄漏🥲"></a>Part4. 如何预防内存泄漏🥲</h2><h3 id="解除引用"><a href="#解除引用" class="headerlink" title="解除引用"></a>解除引用</h3><p>确保占用最少的内存可以让页面获得更好的性能。而优化内存占用的最佳方式，就是为执行中的代码只保存必要的数据。一旦数据不再有用，最好通过将其值设置为 null 来释放其引用——这个做法叫做解除引用（dereferencing）</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">createPerson</span>(<span class="hljs-params">name</span>)&#123;<br>  <span class="hljs-keyword">var</span> localPerson = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Object</span>();<br>  localPerson.<span class="hljs-property">name</span> = name;<br>  <span class="hljs-keyword">return</span> localPerson;<br>&#125;<br><span class="hljs-keyword">var</span> globalPerson = <span class="hljs-title function_">createPerson</span>(<span class="hljs-string">&quot;Nicholas&quot;</span>);<br><span class="hljs-comment">// 手动解除 globalPerson 的引用</span><br>globalPerson = <span class="hljs-literal">null</span>;<br></code></pre></td></tr></table></figure>
+
+<p>解除一个值的引用并不意味着自动回收该值所占用的内存。解除引用的真正作用是让值脱离执行环境，以便垃圾收集器下次运行时将其回收。</p>
+<h3 id="提供手动清空变量的方法"><a href="#提供手动清空变量的方法" class="headerlink" title="提供手动清空变量的方法"></a>提供手动清空变量的方法</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">var</span> leakArray = [];<br><span class="hljs-built_in">exports</span>.<span class="hljs-property">clear</span> = <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br> leakArray = [];<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="在业务不需要用到的内部函数，可以重构在函数外，实现解除闭包"><a href="#在业务不需要用到的内部函数，可以重构在函数外，实现解除闭包" class="headerlink" title="在业务不需要用到的内部函数，可以重构在函数外，实现解除闭包"></a>在业务不需要用到的内部函数，可以重构在函数外，实现解除闭包</h3><h3 id="免创建过多生命周期较长的对象，或将对象分解成多个子对象"><a href="#免创建过多生命周期较长的对象，或将对象分解成多个子对象" class="headerlink" title="免创建过多生命周期较长的对象，或将对象分解成多个子对象"></a>免创建过多生命周期较长的对象，或将对象分解成多个子对象</h3><h3 id="避免过多使用闭包"><a href="#避免过多使用闭包" class="headerlink" title="避免过多使用闭包"></a>避免过多使用闭包</h3><h3 id="注意清除定时器和事件监听器"><a href="#注意清除定时器和事件监听器" class="headerlink" title="注意清除定时器和事件监听器"></a>注意清除定时器和事件监听器</h3><h3 id="Nodejs-中使用-stream-或-buffer-来操作大文件，不会受-Nodejs-内存限制"><a href="#Nodejs-中使用-stream-或-buffer-来操作大文件，不会受-Nodejs-内存限制" class="headerlink" title="Nodejs 中使用 stream 或 buffer 来操作大文件，不会受 Nodejs 内存限制"></a>Nodejs 中使用 stream 或 buffer 来操作大文件，不会受 Nodejs 内存限制</h3><h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><ul>
+<li><p>垃圾回收机制是把双刃剑，它可以让开发者不用担心内存分配，但是同时，会造成脚本执行速度变慢。</p>
+</li>
+<li><p>以前的浏览器中主要通过标记清除方法来回收垃圾，NodeJs 和Chrome V8中主要通过分代回收、Scavenge、标记清除、增量标记等算法来回收垃圾。</p>
+</li>
+</ul>
+<p>在日常开发中，有一些不引人注意的书写方式可能会导致内存泄漏，需要多注意自己的代码规范！！！🥳</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%89%8D%E7%AB%AF/" class="category-chain-item">前端</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%89%8D%E7%AB%AF/js%E8%BF%9B%E9%98%B6/" class="category-chain-item">js进阶</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%89%8D%E7%AB%AF/" class="print-no-link">#前端</a>
+      
+        <a href="/tags/js%E8%BF%9B%E9%98%B6/" class="print-no-link">#js进阶</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>JS的GC到底怎么工作的？💼</div>
+      <div>http://baidu.com/2024/05/01/gc/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>KB</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年5月1日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/03/16/from_0_to_react-native/" title="从0开始的React native教程🥹">
+                        <span class="hidden-mobile">从0开始的React native教程🥹</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'konodioda727/konodioda727');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
