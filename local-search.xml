@@ -4,6 +4,19 @@
   
   
   <entry>
+    <title></title>
+    <link href="/2024/05/20/network/"/>
+    <url>/2024/05/20/network/</url>
+    
+    <content type="html"><![CDATA[<h1 id="为什么校园网这么难用？☹️"><a href="#为什么校园网这么难用？☹️" class="headerlink" title="为什么校园网这么难用？☹️"></a>为什么校园网这么难用？☹️</h1><blockquote><p>自从学校决定升级校园网之后，这个破网就越发的难用，根据哥们的观察，主要体现在以下两点：</p><ul><li>部分网站无法访问</li><li>宿舍连的网，到教室要重新登录</li></ul><p>这篇主要讲讲第一点，想看后续可以蹲我博客💩</p></blockquote><h2 id="为什么某些网站无法访问？"><a href="#为什么某些网站无法访问？" class="headerlink" title="为什么某些网站无法访问？"></a>为什么某些网站无法访问？</h2><h3 id="1-故事背景😡"><a href="#1-故事背景😡" class="headerlink" title="1. 故事背景😡"></a>1. 故事背景😡</h3><p>本人和舍友都是cs孝子，最近发现我们一整个寝室，链接<code>完美世界竞技平台</code> 的时候，页面展示不全，还会弹出：网络错误 的提示。</p><p>因此每次都需要换到我手机热点再重新连，这令我十分恼火😒。</p><p>为此，我专门去研究了研究校园网这个玩意</p><h3 id="2-初露端倪🧐"><a href="#2-初露端倪🧐" class="headerlink" title="2. 初露端倪🧐"></a>2. 初露端倪🧐</h3><p>首先，我尝试去抓出来<code>完美世界</code>的域名和ip，不抓不知道，一抓吓一跳，这是我连校园网时解析出来的ip：![image-20240520145724577](&#x2F;Users&#x2F;lawkaiqing&#x2F;Library&#x2F;Application Support&#x2F;typora-user-images&#x2F;image-20240520145724577.png)</p><p>这是我连手机热点时解析的IP：</p><p>![image-20240520154139524](&#x2F;Users&#x2F;lawkaiqing&#x2F;Library&#x2F;Application Support&#x2F;typora-user-images&#x2F;image-20240520154139524.png)</p><p>连手机网时，ping它：</p><p>![image-20240520194812437](&#x2F;Users&#x2F;lawkaiqing&#x2F;Library&#x2F;Application Support&#x2F;typora-user-images&#x2F;image-20240520194812437.png)</p><p>可以看到，相当成功</p><p>接着我试着连校园网去ping它。接着发现大事不妙🙂‍↔️</p><p>![image-20240520154049356](&#x2F;Users&#x2F;lawkaiqing&#x2F;Library&#x2F;Application Support&#x2F;typora-user-images&#x2F;image-20240520154049356.png)</p><p>怎么是timeout？？？？问题可能出在<code>DNS</code>的解析上</p><blockquote><p>为什么说可能呢，因为解析结果不同有可能是因为<code>负载均衡</code>，会出来不同的ip</p></blockquote><p>还有个更幽默的，我去查询这俩ip的地址的时候，惊奇的发现：</p><p>⬇️这是连手机热点时解析的ip，在杭州对吧，很合理</p><p>![image-20240520154352360](&#x2F;Users&#x2F;lawkaiqing&#x2F;Library&#x2F;Application Support&#x2F;typora-user-images&#x2F;image-20240520154352360.png)</p><p>⬇️但是连校园网解析的…</p><p>![image-20240520154604662](&#x2F;Users&#x2F;lawkaiqing&#x2F;Library&#x2F;Application Support&#x2F;typora-user-images&#x2F;image-20240520154604662.png)</p><p>它竟然是个教育网，教育网，不知道是巧合还是故意的…😵‍💫</p><p>这下可以确定确实是<code>DNS</code>出问题了</p><h3 id="3-DNS劫持"><a href="#3-DNS劫持" class="headerlink" title="3. DNS劫持"></a>3. DNS劫持</h3><p>上述情况就是<code>DNS</code>劫持导致的。</p><p>所谓<code>DNS</code>劫持就是通过拦截<code>DNS</code>解析请求，找出特定范围的请求，返回错误的ip，导致访问错误，或者什么都不做，等待请求过期。</p><p>解决也很简单，去系统设置里，添加<code>DNS</code>服务地址即可，我这里添加<code>8.8.8.4</code>和<code>8.8.4.4</code>，为GoogleDNS地址，接下来就能正常访问啦！</p><p>![image-20240520155630716](&#x2F;Users&#x2F;lawkaiqing&#x2F;Library&#x2F;Application Support&#x2F;typora-user-images&#x2F;image-20240520155630716.png)</p><p>![image-20240520155755660](&#x2F;Users&#x2F;lawkaiqing&#x2F;Library&#x2F;Application Support&#x2F;typora-user-images&#x2F;image-20240520155755660.png)</p><h3 id="4-总结"><a href="#4-总结" class="headerlink" title="4. 总结"></a>4. 总结</h3><p>完美世界怎么你了🤡</p><p>校园网你诗人握持🤡</p>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>JS的GC到底怎么工作的？💼</title>
     <link href="/2024/05/01/gc/"/>
     <url>/2024/05/01/gc/</url>
